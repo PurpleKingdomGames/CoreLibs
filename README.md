@@ -12,4 +12,4 @@ public methods. A binary heap can be constructed with any Type that extends
 
  * Add: Add an item to the heap
  * Remove: Returns the item with the lowest value off of the heap
- * Sort: Re-sort the heap
+ * Sort: Re-sort the heap from the specified index

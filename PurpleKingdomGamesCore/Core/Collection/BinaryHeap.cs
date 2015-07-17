@@ -54,10 +54,15 @@ namespace PurpleKingdomGames.Core.Collection
         /// Resort the heap from the specified index. Used when an items value changes
         /// </summary>
         /// <param name="index">The index of the item that changed value</param>
+        /// <exception cref="ArgumentOutOfRangeException">If the index is out of range</exception>
         public void Sort(int index)
         {
             if (index >= items.Count) {
                 throw new ArgumentOutOfRangeException("Index must be less than " + items.Count + " (got " + index + ")");
+            }
+
+            if (index < 0) {
+                throw new ArgumentOutOfRangeException("Index must be greater than zero (got " + index + ")");
             }
             
             // Move the item to the end of the heap if we're not already
