@@ -18,14 +18,15 @@ namespace PurpleKingdomGames.Core.Collection
         public void Add(T item)
         {
             items.Add(item);
-            int m = items.Count - 1;
-            while (m != 0) {
-                if (items[m].CompareTo(items[m / 2]) <= 0) {
-                    T temp = items[m / 2];
-                    items[m / 2] = items[m];
-                    items[m] = temp;
+            int m = items.Count;
+            while (m != 1) {
+                int compM = (int) Math.Floor(m / 2f);
+                if (items[m - 1].CompareTo(items[compM - 1]) <= 0) {
+                    T temp = items[compM - 1];
+                    items[compM - 1] = items[m - 1];
+                    items[m - 1] = temp;
 
-                    m = m / 2;
+                    m = compM;
                 } else {
                     break;
                 }
@@ -35,7 +36,9 @@ namespace PurpleKingdomGames.Core.Collection
         public T Remove()
         {
             T returnItem = items[0];
-            items.RemoveAt(0);
+            items[0] = items[items.Count - 1];
+
+            items.RemoveAt(items.Count - 1);
 
             Sort();
 
@@ -47,17 +50,18 @@ namespace PurpleKingdomGames.Core.Collection
             int i = 1;
             while (true) {
                 int u = i;
-                if (((2 * u) + 1) <= items.Count) {
-                    if (items[u].CompareTo(items[2 * u]) >= 0) {
-                        i = 2 * u;
+                int compU = 2 * u;
+                if (compU < items.Count) {
+                    if (items[u - 1].CompareTo(items[compU - 1]) >= 0) {
+                        i = compU;
                     }
 
-                    if (items[i].CompareTo(items[(2 * u) + 1]) >= 0) {
-                        i = (2 * u) + 1;
+                    if (items[i - 1].CompareTo(items[compU]) >= 0) {
+                        i = compU + 1;
                     }
-                } else if ((2 * u) <= items.Count) {
-                    if (items[u].CompareTo(items[2 * u]) >= 0) {
-                        i = 2 * u;
+                } else if (compU - 1 < items.Count) {
+                    if (items[u - 1].CompareTo(items[compU - 1]) >= 0) {
+                        i = compU;
                     }
                 }
 
@@ -65,9 +69,9 @@ namespace PurpleKingdomGames.Core.Collection
                     break;
                 }
 
-                T temp = items[u];
-                items[u] = items[i];
-                items[i] = temp;
+                T temp = items[u-1];
+                items[u-1] = items[i-1];
+                items[i-1] = temp;
             }
         }
     }
