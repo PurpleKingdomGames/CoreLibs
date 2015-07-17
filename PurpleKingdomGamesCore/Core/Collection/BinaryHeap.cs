@@ -5,11 +5,11 @@ namespace PurpleKingdomGames.Core.Collection
 {
     public class BinaryHeap<T> where T : IComparable
     {
-        public bool Empty
+        public int Count
         {
             get
             {
-                return items.Count == 0;
+                return items.Count;
             }
         }
 
