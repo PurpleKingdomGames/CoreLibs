@@ -45,7 +45,7 @@ namespace PurpleKingdomGames.Test.Core.Collection
             int randomIndex = 0;
             while (sortedList.Count > 0) {
                 randomIndex = r.Next(0, sortedList.Count);
-                heap.Add(testData[randomIndex]);
+                heap.Add(sortedList[randomIndex]);
 
                 sortedList.RemoveAt(randomIndex);
             }
