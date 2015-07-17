@@ -29,19 +29,8 @@ namespace PurpleKingdomGames.Core.Collection
         public void Add(T item)
         {
             items.Add(item);
-            int m = items.Count;
-            while (m != 1) {
-                int compM = (int) Math.Floor(m / 2f);
-                if (items[m - 1].CompareTo(items[compM - 1]) <= 0) {
-                    T temp = items[compM - 1];
-                    items[compM - 1] = items[m - 1];
-                    items[m - 1] = temp;
 
-                    m = compM;
-                } else {
-                    break;
-                }
-            }
+            Sort(items.Count - 1);
         }
 
         /// <summary>
@@ -55,15 +44,48 @@ namespace PurpleKingdomGames.Core.Collection
 
             items.RemoveAt(items.Count - 1);
 
-            Sort();
+            SortAfterRemoval();
 
             return returnItem;
         }
 
+
         /// <summary>
-        /// Resort the heap. Useful if a value has been modified outside of the heap
+        /// Resort the heap from the specified index. Used when an items value changes
         /// </summary>
-        public void Sort()
+        /// <param name="index">The index of the item that changed value</param>
+        public void Sort(int index)
+        {
+            if (index >= items.Count) {
+                throw new ArgumentOutOfRangeException("Index must be less than " + items.Count + " (got " + index + ")");
+            }
+            
+            // Move the item to the end of the heap if we're not already
+            if (index < (items.Count - 1)) {
+                T tmp = items[index];
+                items.RemoveAt(index);
+                items.Add(tmp);
+            }
+
+            int m = items.Count;
+            while (m != 1) {
+                int compM = (int)Math.Floor(m / 2f);
+                if (items[m - 1].CompareTo(items[compM - 1]) <= 0) {
+                    T temp = items[compM - 1];
+                    items[compM - 1] = items[m - 1];
+                    items[m - 1] = temp;
+
+                    m = compM;
+                } else {
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Resort the heap
+        /// </summary>
+        private void SortAfterRemoval()
         {
             int i = 1;
             while (true) {
