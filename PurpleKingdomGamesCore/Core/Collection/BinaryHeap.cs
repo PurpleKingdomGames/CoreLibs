@@ -3,8 +3,15 @@ using System.Collections.Generic;
 
 namespace PurpleKingdomGames.Core.Collection
 {
+    /// <summary>
+    /// A binary heap implementation for any types that extend IComparable
+    /// </summary>
+    /// <typeparam name="T">Any type that extends IComparable</typeparam>
     public class BinaryHeap<T> where T : IComparable
     {
+        /// <summary>
+        /// The number of items on the heap
+        /// </summary>
         public int Count
         {
             get
@@ -15,6 +22,10 @@ namespace PurpleKingdomGames.Core.Collection
 
         private List<T> items = new List<T>();
 
+        /// <summary>
+        /// Add a single item to the heap
+        /// </summary>
+        /// <param name="item"></param>
         public void Add(T item)
         {
             items.Add(item);
@@ -33,6 +44,10 @@ namespace PurpleKingdomGames.Core.Collection
             }
         }
 
+        /// <summary>
+        /// Get the lowest value from the top of the heap
+        /// </summary>
+        /// <returns></returns>
         public T Remove()
         {
             T returnItem = items[0];
@@ -45,6 +60,9 @@ namespace PurpleKingdomGames.Core.Collection
             return returnItem;
         }
 
+        /// <summary>
+        /// Resort the heap. Useful if a value has been modified outside of the heap
+        /// </summary>
         public void Sort()
         {
             int i = 1;
