@@ -39,7 +39,7 @@ namespace PurpleKingdomGames.Core.Pathfinding
         /// <returns></returns>
         internal GridNodeCalc2D ToGridNodeCalc2D()
         {
-            return new GridNodeCalc2D() { ReferenceNode = this };
+            return new GridNodeCalc2D(this);
         }
     }
 }
