@@ -94,8 +94,8 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
                 int minY = (int) Math.Max(currentGridPos.Y - 1, 0);
                 int maxY = (int) Math.Min(currentGridPos.Y + 1, grid.GetLength(1));
 
-                for (int x = minX; x < maxX; x++) {
-                    for (int y = minY; y < maxY; y++) {
+                for (int x = minX; x <= maxX; x++) {
+                    for (int y = minY; y <= maxY; y++) {
                         GridNodeCalc2D node = grid[x, y].ToGridNodeCalc2D();
                         node.GridPosition = new Point2D(x, y);
                         
@@ -127,7 +127,7 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
                             }
 
                             // Calculate the heuristic cost
-                            currentNode.HeuristicCost = (int) (
+                            node.HeuristicCost = (int) (
                                 Math.Abs(node.GridPosition.X - target.X) + 
                                 Math.Abs(node.GridPosition.Y - target.Y)
                             );
