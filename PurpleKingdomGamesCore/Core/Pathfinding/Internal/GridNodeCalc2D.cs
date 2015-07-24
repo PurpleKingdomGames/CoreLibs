@@ -23,6 +23,11 @@ namespace PurpleKingdomGames.Core.Pathfinding.Internal
         public int HeuristicCost { get; set; }
 
         /// <summary>
+        /// The position of this node on the grid
+        /// </summary>
+        public Point2D GridPosition { get; set; }
+
+        /// <summary>
         /// The parent of this node
         /// </summary>
         public GridNodeCalc2D Parent { get; set; }
