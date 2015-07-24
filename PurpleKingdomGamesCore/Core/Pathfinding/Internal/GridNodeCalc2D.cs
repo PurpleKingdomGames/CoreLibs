@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PurpleKingdomGames.Core.Pathfinding
+namespace PurpleKingdomGames.Core.Pathfinding.Internal
 {
     /// <summary>
     /// Internal class used for storing movement costs when pathfinding
