@@ -3,7 +3,7 @@
 Contains a number of libraries for everyday problems. All libraries can be found under the 'PurpleKingdomGames.Core'
 namespace, and subsequent namespaces under that
 
-## PurpleKingdomGames.Core.Collection
+## PurpleKingdomGames.Core.Collections
 
 ### BinaryHeap
 Provides a minimum [binary heap](https://en.wikipedia.org/wiki/Binary_heap) generic implementation with 3
