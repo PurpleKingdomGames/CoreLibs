@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PurpleKingdomGames.Core.Collection
+namespace PurpleKingdomGames.Core.Collections
 {
     /// <summary>
     /// A binary heap implementation for any types that extend IComparable

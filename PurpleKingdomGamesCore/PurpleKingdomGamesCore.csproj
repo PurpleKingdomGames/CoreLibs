@@ -60,12 +60,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Core\Collection\BinaryHeap.cs" />
+    <Compile Include="Core\Collections\BinaryHeap.cs" />
     <Compile Include="Core\Pathfinding\GridNode2D.cs" />
     <Compile Include="Core\Pathfinding\GridNodeCalc2D.cs" />
     <Compile Include="Core\Point2D.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Test\Core\Collection\BinaryHeapTest.cs" />
+    <Compile Include="Test\Core\Collections\BinaryHeapTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

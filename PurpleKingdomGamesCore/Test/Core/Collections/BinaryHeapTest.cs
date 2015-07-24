@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using PurpleKingdomGames.Core.Collection;
+using PurpleKingdomGames.Core.Collections;
 
-namespace PurpleKingdomGames.Test.Core.Collection
+namespace PurpleKingdomGames.Test.Core.Collections
 {
     [TestFixture]
     class BinaryHeapTest
