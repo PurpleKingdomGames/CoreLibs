@@ -87,6 +87,16 @@ namespace PurpleKingdomGames.Core.Collections
         }
 
         /// <summary>
+        /// Gets the index of the specified item in the heap
+        /// </summary>
+        /// <param name="item">The item to search for</param>
+        /// <returns>Returns zero or more on success. -1 on failure</returns>
+        public int IndexOf(T item)
+        {
+            return items.IndexOf(item);
+        }
+
+        /// <summary>
         /// Resort the heap
         /// </summary>
         private void SortAfterRemoval()
