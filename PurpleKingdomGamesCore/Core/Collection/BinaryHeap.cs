@@ -49,7 +49,6 @@ namespace PurpleKingdomGames.Core.Collection
             return returnItem;
         }
 
-
         /// <summary>
         /// Resort the heap from the specified index. Used when an items value changes
         /// </summary>
@@ -64,7 +63,7 @@ namespace PurpleKingdomGames.Core.Collection
             if (index < 0) {
                 throw new ArgumentOutOfRangeException("Index must be greater than zero (got " + index + ")");
             }
-            
+
             // Move the item to the end of the heap if we're not already
             if (index < (items.Count - 1)) {
                 T tmp = items[index];
@@ -74,7 +73,7 @@ namespace PurpleKingdomGames.Core.Collection
 
             int m = items.Count;
             while (m != 1) {
-                int compM = (int)Math.Floor(m / 2f);
+                int compM = (int) Math.Floor(m / 2f);
                 if (items[m - 1].CompareTo(items[compM - 1]) <= 0) {
                     T temp = items[compM - 1];
                     items[compM - 1] = items[m - 1];
@@ -114,9 +113,9 @@ namespace PurpleKingdomGames.Core.Collection
                     break;
                 }
 
-                T temp = items[u-1];
-                items[u-1] = items[i-1];
-                items[i-1] = temp;
+                T temp = items[u - 1];
+                items[u - 1] = items[i - 1];
+                items[i - 1] = temp;
             }
         }
     }
