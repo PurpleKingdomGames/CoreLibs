@@ -34,16 +34,30 @@ namespace PurpleKingdomGames.Test.Core.Pathfinding.Seekers
             // Initialise the grid
             GridNode2D[,] grid = buildGridFromChars(charGrid);
 
-            /*Point2D start = new Point2D(1, 5);
-            Point2D target = new Point2D(9, 5);*/
+            Point2D start = new Point2D(1, 5);
+            Point2D target = new Point2D(9, 5);
 
-            Point2D start = new Point2D(1, 2);
-            Point2D target = new Point2D(5, 2);
-
+            Point2D[] expectedPath = new Point2D[9] {
+                new Point2D(1, 5), new Point2D(2, 5), new Point2D(3, 5),
+                new Point2D(4, 6), new Point2D(5, 7), new Point2D(6, 7),
+                new Point2D(7, 6), new Point2D(8, 5), new Point2D(9, 5),
+            };
             Point2D[] path = AStar.Seek(grid, start, target);
-            for (int i = 0; i < path.Length; i++) {
 
-            }
+            // Check that the path taken was the same as the expected path
+            Assert.AreEqual(expectedPath, path, "Path from S to A did not match");
+
+            // Set a new target (B)
+            target = new Point2D(0, 8);
+
+            expectedPath = new Point2D[4] {
+                new Point2D(1, 5), new Point2D(1, 6), new Point2D(0, 7),
+                new Point2D(0, 8),
+            };
+            path = AStar.Seek(grid, start, target);
+
+            // Check that the path taken was the same as the expected path
+            Assert.AreEqual(expectedPath, path, "Path from S to B did not match");
         }
 
         private GridNode2D[,] buildGridFromChars(char[,] gridDef)
