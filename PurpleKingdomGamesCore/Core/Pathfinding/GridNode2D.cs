@@ -1,4 +1,4 @@
-﻿using PurpleKingdomGames.Core;
+﻿using PurpleKingdomGames.Core.Pathfinding.Internal;
 
 namespace PurpleKingdomGames.Core.Pathfinding
 {

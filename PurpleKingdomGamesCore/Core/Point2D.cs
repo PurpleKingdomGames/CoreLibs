@@ -1,5 +1,4 @@
-﻿
-namespace PurpleKingdomGames.Core
+﻿namespace PurpleKingdomGames.Core
 {
     /// <summary>
     /// A single 2-dimensional point in world space
@@ -83,7 +82,7 @@ namespace PurpleKingdomGames.Core
         {
             return (point1.X == point2.X && point1.Y == point2.Y);
         }
-        
+
         /// <summary>
         /// Identify an object in a hash-based collection
         /// </summary>
