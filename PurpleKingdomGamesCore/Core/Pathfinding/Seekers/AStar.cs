@@ -9,6 +9,13 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
     /// </summary>
     public static class AStar
     {
+        public enum LockType
+        {
+            Bottom,
+            Top,
+            None
+        }
+
         /// <summary>
         /// Seek a target in a 2-dimensional grid
         /// </summary>
@@ -21,35 +28,28 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
         /// </exception>
         public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target)
         {
+            return Seek(grid, start, target, LockType.None, 0, 0, true);
+        }
+
+        /// <summary>
+        /// Seek a target in a 2-dimensional grid
+        /// </summary>
+        /// <param name="grid">The grid to search</param>
+        /// <param name="start">The start point to seek from</param>
+        /// <param name="target">The target to seek to</param>
+        /// <param name="lockType">The start point to seek from</param>
+        /// <param name="maxDescent">The target to seek to</param>
+        /// <param name="maxClimb">The target to seek to</param>
+        /// <param name="cutCorners">Whether or not to cut a corner</param>
+        /// <returns>An array of grid nodes needed to pass through to get to the target</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If the start or target are out of range of the grid
+        /// </exception>
+        public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, LockType lockType, int maxDescent, int maxClimb, bool cutCorners)
+        {
             // Calculate possible paths
             GridNodeHeap2D openNodes = new GridNodeHeap2D();
             List<GridNode2D> closedNodes = new List<GridNode2D>();
-
-            // TODO: Add this option to the method
-            /*LockYAxis lockYAxis = LockYAxis.LockToBottom;
-
-            // Find the starting square
-            int startX = (int) Math.Floor(start.X - grid.Offset.X);
-            int startY = (int) Math.Floor(start.Y - grid.Offset.Y);
-
-            if (startX > grid.Nodes.GetLength(0) || startX < 0) {
-                throw new Exception(
-                    "Invalid grid reference. Got " + startX + "," + startY +
-                    ". But grid only runs from 0,0 to " + grid.Nodes.GetLength(0) + "," + grid.Nodes.GetLength(1)
-                );
-            }
-
-            if (lockYAxis != LockYAxis.None) {
-                int step = (lockYAxis == LockYAxis.LockToBottom ? 1 : -1);
-                int target = (lockYAxis == LockYAxis.LockToBottom ? grid.Nodes.GetLength(1) : 0);
-                for (int i = startY; i < target; i += step) {
-                    if (!grid.Nodes[startX, startY].Passable) {
-                        break;
-                    }
-
-                    startY = i;
-                }
-            }*/
 
             // Check that the starting position is not out of range of the grid
             if (start.X > grid.GetLength(0) || start.X < 0 || start.Y >= grid.GetLength(1) || start.Y < 0) {
@@ -59,12 +59,25 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
                 );
             }
 
-            // check taht the target position is not out of range of the grid
+            // check that the target position is not out of range of the grid
             if (target.X > grid.GetLength(0) || target.X < 0 || target.Y >= grid.GetLength(1) || target.Y < 0) {
                 throw new ArgumentOutOfRangeException(
                     "Invalid target grid reference. Got " + target.X + "," + target.Y +
                     ". But grid only runs from 0,0 to " + grid.GetLength(0) + "," + grid.GetLength(1)
                 );
+            }
+
+            // If a lock type is specified then  move the starting position to the top or bottom of the Y axis
+            if (lockType != LockType.None) {
+                int step = (lockType == LockType.Bottom ? 1 : -1);
+                int targetI = (lockType == LockType.Bottom ? grid.GetLength(1) : 0);
+                for (int i = (int) start.Y; i < targetI; i += step) {
+                    if (!grid[(int) start.X, (int) start.Y].Passable) {
+                        break;
+                    }
+
+                    start.Y = i;
+                }
             }
 
             GridNodeCalc2D currentNode = grid[(int) start.X, (int) start.Y].ToGridNodeCalc2D();
@@ -79,8 +92,18 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
             // Continue until the open list is empty
             while (openNodes.Count > 0) {
                 currentNode = openNodes.Remove();
-                closedNodes.Add(currentNode.ReferenceNode);
 
+                // If we have a maximum climb, then make sure that the current node hasn't climbed too high
+                if (maxClimb != 0 && getAscentDistance(currentNode, grid) > maxClimb) {
+                    break;
+                }
+
+                // If we have a maximum climb, then make sure that the current node hasn't fallen too far
+                if (maxDescent != 0 && getDescentDistance(currentNode, grid) > maxDescent) {
+                    break;
+                }
+
+                closedNodes.Add(currentNode.ReferenceNode);
                 if (currentNode.GridPosition == target) {
                     targetNode = currentNode;
                     break;
@@ -88,7 +111,7 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
 
                 Point2D currentGridPos = currentNode.GridPosition;
 
-                // Make sure the X and Y coordinates are alwqys within the grid boundaries
+                // Make sure the X and Y coordinates are always within the grid boundaries
                 int minX = (int) Math.Max(currentGridPos.X - 1, 0);
                 int maxX = (int) Math.Min(currentGridPos.X + 1, grid.GetLength(0));
                 int minY = (int) Math.Max(currentGridPos.Y - 1, 0);
@@ -98,7 +121,7 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
                     for (int y = minY; y <= maxY; y++) {
                         GridNodeCalc2D node = grid[x, y].ToGridNodeCalc2D();
                         node.GridPosition = new Point2D(x, y);
-                        
+
                         // Skip over this node if it's the one we're currently looking at, or it's in the closed list
                         if (node.GridPosition == currentGridPos || closedNodes.Contains(node.ReferenceNode)) {
                             continue;
@@ -128,7 +151,7 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
 
                             // Calculate the heuristic cost
                             node.HeuristicCost = (int) (
-                                Math.Abs(node.GridPosition.X - target.X) + 
+                                Math.Abs(node.GridPosition.X - target.X) +
                                 Math.Abs(node.GridPosition.Y - target.Y)
                             );
 
@@ -176,6 +199,50 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
 
             // Return the new array of path points
             return path.ToArray();
+        }
+
+        private static int getDescentDistance(GridNodeCalc2D node, GridNode2D[,] grid)
+        {
+            int descentAmount = 0;
+            while (node != null) {
+                // If where we have come from is higher than where we started then we are descending
+                if (node.Parent != null && node.Parent.GridPosition.Y > node.GridPosition.Y) {
+                    // Check that we aren't on the ground
+                    if ((node.GridPosition.Y + 1) < grid.GetLength(1)) {
+                        if (!grid[(int) node.GridPosition.X, (int) (node.GridPosition.Y + 1)].Passable) {
+                            break;
+                        }
+                    }
+
+                    descentAmount++;
+                }
+
+                node = node.Parent;
+            }
+
+            return descentAmount;
+        }
+
+        private static int getAscentDistance(GridNodeCalc2D node, GridNode2D[,] grid)
+        {
+            int climbAmount = 0;
+            while (node != null) {
+                // If where we have come from is lower than where we started then we are climbing
+                if (node.Parent != null && node.Parent.GridPosition.Y < node.GridPosition.Y) {
+                    // Check that we aren't on the ground
+                    if ((node.GridPosition.Y + 1) < grid.GetLength(1)) {
+                        if (!grid[(int) node.GridPosition.X, (int) (node.GridPosition.Y + 1)].Passable) {
+                            break;
+                        }
+                    }
+
+                    climbAmount++;
+                }
+
+                node = node.Parent;
+            }
+
+            return climbAmount;
         }
     }
 }
