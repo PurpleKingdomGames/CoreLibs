@@ -9,12 +9,10 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
     /// </summary>
     public static class AStar
     {
-        public enum LockType
-        {
-            ClosestBottom,
-            ClosestTop,
-            None
-        }
+        public const int DEFAULT_MOVEMENTCOST = 10;
+        public const int DEFAULT_DIAGONALCOST = 14;
+        public const int DEFAULT_ASCENTCOST = 0;
+        public const int DEFAULT_DESCENTCOST = 0;
 
         /// <summary>
         /// Seek a target in a 2-dimensional grid
@@ -28,23 +26,10 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
         /// </exception>
         public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target)
         {
-            return Seek(grid, start, target, LockType.None, 0, 0, true);
-        }
-
-        /// <summary>
-        /// Seek a target in a 2-dimensional grid
-        /// </summary>
-        /// <param name="grid">The grid to search</param>
-        /// <param name="start">The start point to seek from</param>
-        /// <param name="target">The target to seek to</param>
-        /// <param name="lockType">The start point to seek from</param>
-        /// <returns>An array of grid nodes needed to pass through to get to the target</returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// If the start or target are out of range of the grid
-        /// </exception>
-        public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, LockType lockType)
-        {
-            return Seek(grid, start, target, lockType, 0, 0, true);
+            return Seek(
+                grid, start, target, true, DEFAULT_MOVEMENTCOST, DEFAULT_DIAGONALCOST,
+                DEFAULT_ASCENTCOST, DEFAULT_DESCENTCOST
+            );
         }
 
         /// <summary>
@@ -60,57 +45,47 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
         /// </exception>
         public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, bool cutCorners)
         {
-            return Seek(grid, start, target, LockType.None, 0, 0, cutCorners);
+            return Seek(
+                grid, start, target, cutCorners,
+                DEFAULT_MOVEMENTCOST, DEFAULT_DIAGONALCOST,
+                DEFAULT_ASCENTCOST, DEFAULT_DESCENTCOST
+            );
         }
 
-        /// <summary>
-        /// Seek a target in a 2-dimensional grid
-        /// </summary>
-        /// <param name="grid">The grid to search</param>
-        /// <param name="start">The start point to seek from</param>
-        /// <param name="target">The target to seek to</param>
-        /// <param name="maxClimb">The target to seek to</param>
-        /// <returns>An array of grid nodes needed to pass through to get to the target</returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// If the start or target are out of range of the grid
-        /// </exception>
-        public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, int maxClimb)
+        public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, int ascentCost)
         {
-            return Seek(grid, start, target, LockType.None, maxClimb, 0, false);
+            return Seek(
+                grid, start, target, false,
+                DEFAULT_MOVEMENTCOST, DEFAULT_DIAGONALCOST,
+                ascentCost, DEFAULT_DESCENTCOST
+            );
         }
 
-        /// <summary>
-        /// Seek a target in a 2-dimensional grid
-        /// </summary>
-        /// <param name="grid">The grid to search</param>
-        /// <param name="start">The start point to seek from</param>
-        /// <param name="target">The target to seek to</param>
-        /// <param name="maxClimb">The target to seek to</param>
-        /// <param name="maxDescent">The target to seek to</param>
-        /// <returns>An array of grid nodes needed to pass through to get to the target</returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// If the start or target are out of range of the grid
-        /// </exception>
-        public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, int maxClimb, int maxDescent)
+        public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, bool cutCorners, int ascentCost)
         {
-            return Seek(grid, start, target, LockType.None, maxClimb, maxDescent, false);
+            return Seek(
+                grid, start, target, cutCorners,
+                DEFAULT_MOVEMENTCOST, DEFAULT_DIAGONALCOST,
+                ascentCost, DEFAULT_DESCENTCOST
+            );
         }
 
-        /// <summary>
-        /// Seek a target in a 2-dimensional grid
-        /// </summary>
-        /// <param name="grid">The grid to search</param>
-        /// <param name="start">The start point to seek from</param>
-        /// <param name="target">The target to seek to</param>
-        /// <param name="maxClimb">The target to seek to</param>
-        /// <param name="cutCorners">Whether or not to cut a corner</param>
-        /// <returns>An array of grid nodes needed to pass through to get to the target</returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// If the start or target are out of range of the grid
-        /// </exception>
-        public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, int maxClimb, bool cutCorners)
+        public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, int ascentCost, int descentCost)
         {
-            return Seek(grid, start, target, LockType.None, maxClimb, 0, cutCorners);
+            return Seek(
+                grid, start, target, false,
+                DEFAULT_MOVEMENTCOST, DEFAULT_DIAGONALCOST,
+                ascentCost, descentCost
+            );
+        }
+
+        public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, bool cutCorners, int ascentCost, int descentCost)
+        {
+            return Seek(
+                grid, start, target, cutCorners,
+                DEFAULT_MOVEMENTCOST, DEFAULT_DIAGONALCOST,
+                ascentCost, descentCost
+            );
         }
 
         /// <summary>
@@ -126,61 +101,10 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
         /// <exception cref="ArgumentOutOfRangeException">
         /// If the start or target are out of range of the grid
         /// </exception>
-        public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, int maxClimb, int maxDescent, bool cutCorners)
-        {
-            return Seek(grid, start, target, LockType.None, maxClimb, maxDescent, cutCorners);
-        }
-
-        /// <summary>
-        /// Seek a target in a 2-dimensional grid
-        /// </summary>
-        /// <param name="grid">The grid to search</param>
-        /// <param name="start">The start point to seek from</param>
-        /// <param name="target">The target to seek to</param>
-        /// <param name="lockType">The start point to seek from</param>
-        /// <param name="maxClimb">The target to seek to</param>
-        /// <returns>An array of grid nodes needed to pass through to get to the target</returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// If the start or target are out of range of the grid
-        /// </exception>
-        public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, LockType lockType, int maxClimb)
-        {
-            return Seek(grid, start, target, lockType, maxClimb, 0, false);
-        }
-
-        /// <summary>
-        /// Seek a target in a 2-dimensional grid
-        /// </summary>
-        /// <param name="grid">The grid to search</param>
-        /// <param name="start">The start point to seek from</param>
-        /// <param name="target">The target to seek to</param>
-        /// <param name="lockType">The start point to seek from</param>
-        /// <param name="maxClimb">The target to seek to</param>
-        /// <param name="maxDescent">The target to seek to</param>
-        /// <returns>An array of grid nodes needed to pass through to get to the target</returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// If the start or target are out of range of the grid
-        /// </exception>
-        public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, LockType lockType, int maxClimb, int maxDescent)
-        {
-            return Seek(grid, start, target, lockType, maxClimb, maxDescent, false);
-        }
-
-        /// <summary>
-        /// Seek a target in a 2-dimensional grid
-        /// </summary>
-        /// <param name="grid">The grid to search</param>
-        /// <param name="start">The start point to seek from</param>
-        /// <param name="target">The target to seek to</param>
-        /// <param name="lockType">The start point to seek from</param>
-        /// <param name="maxClimb">The target to seek to</param>
-        /// <param name="maxDescent">The target to seek to</param>
-        /// <param name="cutCorners">Whether or not to cut a corner</param>
-        /// <returns>An array of grid nodes needed to pass through to get to the target</returns>
-        /// <exception cref="ArgumentOutOfRangeException">
-        /// If the start or target are out of range of the grid
-        /// </exception>
-        public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, LockType lockType, int maxClimb, int maxDescent, bool cutCorners)
+        public static Point2D[] Seek(
+            GridNode2D[,] grid, Point2D start, Point2D target, bool cutCorners,
+            int movementCost, int diagonalCost, int ascentCost, int descentCost
+        )
         {
             // Check that the starting position is not out of range of the grid
             if (start.X > grid.GetLength(0) || start.X < 0 || start.Y >= grid.GetLength(1) || start.Y < 0) {
@@ -196,19 +120,6 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
                     "Invalid target grid reference. Got " + target.X + "," + target.Y +
                     ". But grid only runs from 0,0 to " + grid.GetLength(0) + "," + grid.GetLength(1)
                 );
-            }
-
-            // If a lock type is specified then  move the starting position to the top or bottom of the Y axis
-            if (lockType != LockType.None) {
-                int step = (lockType == LockType.ClosestBottom ? 1 : -1);
-                int targetI = (lockType == LockType.ClosestBottom ? grid.GetLength(1) : 0);
-                for (int i = (int) start.Y; i < targetI; i += step) {
-                    if (!grid[(int) start.X, (int) start.Y].Passable) {
-                        break;
-                    }
-
-                    start.Y = i;
-                }
             }
 
             GridNodeHeap2D openNodes = new GridNodeHeap2D();
@@ -232,21 +143,14 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
                     break;
                 }
 
-                // If we have a maximum climb, then make sure that the current node hasn't climbed too high
-                if (maxClimb != 0 && getAscentDistance(currentNode, grid) > maxClimb) {
-                    continue;
-                }
-
-                // If we have a maximum climb, then make sure that the current node hasn't fallen too far
-                if (maxDescent != 0 && getDescentDistance(currentNode, grid) > maxDescent) {
-                    continue;
-                }
-
                 // Add the current node to the closed list
                 closedNodes.Add(currentNode.ReferenceNode);
 
                 // Add additional nodes to the open list, ready to search
-                calculateOpenList(currentNode, target, grid, openNodes, closedNodes, cutCorners);
+                calculateOpenList(
+                    currentNode, target, grid, openNodes, closedNodes, cutCorners,
+                    movementCost, diagonalCost, ascentCost, descentCost
+                );
             }
 
             if (targetNode == null) {
@@ -269,15 +173,19 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
             return path.ToArray();
         }
 
-        private static void calculateOpenList(GridNodeCalc2D currentNode, Point2D target, GridNode2D[,] grid, GridNodeHeap2D openNodes, List<GridNode2D> closedNodes, bool cutCorners)
+        private static void calculateOpenList(
+            GridNodeCalc2D currentNode, Point2D target, GridNode2D[,] grid,
+            GridNodeHeap2D openNodes, List<GridNode2D> closedNodes, bool cutCorners,
+            int movementCost, int diagonalCost, int ascentCost, int descentCost
+        )
         {
             Point2D currentGridPos = currentNode.GridPosition;
 
             // Make sure the X and Y coordinates are always within the grid boundaries
             int minX = (int) Math.Max(currentGridPos.X - 1, 0);
-            int maxX = (int) Math.Min(currentGridPos.X + 1, grid.GetLength(0));
+            int maxX = (int) Math.Min(currentGridPos.X + 1, grid.GetLength(0) - 1);
             int minY = (int) Math.Max(currentGridPos.Y - 1, 0);
-            int maxY = (int) Math.Min(currentGridPos.Y + 1, grid.GetLength(1));
+            int maxY = (int) Math.Min(currentGridPos.Y + 1, grid.GetLength(1) - 1);
 
             for (int x = minX; x <= maxX; x++) {
                 for (int y = minY; y <= maxY; y++) {
@@ -294,41 +202,29 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
                         continue;
                     }
 
-                    GridNodeCalc2D refNode = openNodes.GetByPosition(node.GridPosition);
                     bool isDiagonal = (
                         node.GridPosition.X != currentGridPos.X &&
                         node.GridPosition.Y != currentGridPos.Y
                     );
 
                     // If we're not meant to cut corners, tehn we need to check this now
-                    if (isDiagonal && !cutCorners) {
-                        // If we are further down the grid, then check the square
-                        // above to make sure it's also passable
-                        if (refNode.GridPosition.Y > 0 && refNode.GridPosition.Y > currentGridPos.Y) {
-                            if (!grid[(int) refNode.GridPosition.X, (int) (refNode.GridPosition.Y - 1)].Passable) {
-                                continue;
-                            }
-                        }
-
-                        // If we are further up the grid, then check the square
-                        // below to make sure it's also passable
-                        if (refNode.GridPosition.Y < maxY && refNode.GridPosition.Y < currentGridPos.Y) {
-                            if (!grid[(int) refNode.GridPosition.X, (int) (refNode.GridPosition.Y + 1)].Passable) {
-                                continue;
-                            }
-                        }
+                    if (isDiagonal && !cutCorners && isCuttingCorner(node, currentGridPos, grid)) {
+                        continue;
                     }
 
                     // Is this node on the open list already?
+                    GridNodeCalc2D refNode = openNodes.GetByPosition(node.GridPosition);
                     if (refNode == null) {
                         // If not then set the parent to the current node and calculate the cost
                         node.Parent = currentNode;
-                        node.MovementCost = currentNode.TotalCost + 10;
 
-                        // Diagonal... add a bit
-                        if (isDiagonal) {
-                            node.MovementCost += 4;
-                        }
+                        // Calculate the movement cost to this node
+                        node.MovementCost = currentNode.TotalCost;
+                        node.MovementCost += calculateMovementCost(
+                            movementCost, diagonalCost, ascentCost, descentCost,
+                            isDiagonal, node.GridPosition.Y < currentGridPos.Y,
+                            node.GridPosition.Y > currentGridPos.Y
+                        );
 
                         // Calculate the heuristic cost
                         node.HeuristicCost = (int) (
@@ -349,12 +245,12 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
                         refNode.Parent = currentNode.Parent;
 
                         // Re-calculate the movement cost using the new parent
-                        refNode.MovementCost = refNode.Parent.TotalCost + 10;
-
-                        // Diagonal... add a bit
-                        if (isDiagonal) {
-                            refNode.MovementCost += 4;
-                        }
+                        refNode.MovementCost = refNode.Parent.TotalCost;
+                        refNode.MovementCost += calculateMovementCost(
+                            movementCost, diagonalCost, ascentCost, descentCost,
+                            isDiagonal, refNode.GridPosition.Y < currentGridPos.Y,
+                            refNode.GridPosition.Y > currentGridPos.Y
+                        );
 
                         openNodes.Sort(openNodes.IndexOf(refNode));
                     }
@@ -362,48 +258,54 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
             }
         }
 
-        private static int getDescentDistance(GridNodeCalc2D node, GridNode2D[,] grid)
+        private static bool isCuttingCorner(GridNodeCalc2D node, Point2D currentGridPos, GridNode2D[,] grid)
         {
-            int descentAmount = 0;
-            while (node != null) {
-                // If where we have come from is higher than where we started then we are descending
-                if (node.Parent != null && node.Parent.GridPosition.Y > node.GridPosition.Y) {
-                    // Check that we aren't on the ground
-                    if ((node.GridPosition.Y + 1) < grid.GetLength(1)) {
-                        if (!grid[(int) node.GridPosition.X, (int) (node.GridPosition.Y + 1)].Passable) {
-                            break;
-                        }
-                    }
-
-                    descentAmount++;
+            // If we are further down the grid, then check the node
+            // above to make sure it's also passable
+            if (node.GridPosition.Y > 0 && node.GridPosition.Y > currentGridPos.Y) {
+                if (!grid[(int) node.GridPosition.X, (int) (node.GridPosition.Y - 1)].Passable) {
+                    return true;
                 }
-
-                node = node.Parent;
             }
 
-            return descentAmount;
+            // If we are further up the grid, then check the square
+            // below to make sure it's also passable
+            if (node.GridPosition.Y < grid.GetLength(1) && node.GridPosition.Y < currentGridPos.Y) {
+                if (!grid[(int) node.GridPosition.X, (int) (node.GridPosition.Y + 1)].Passable) {
+                    return true;
+                }
+            }
+
+            // If we are moving to the right then also check the node
+            // to the immediate left to ensure it's passable
+            if (node.GridPosition.X > 0 && node.GridPosition.X > currentGridPos.X) {
+                if (!grid[(int) (node.GridPosition.X - 1), (int) node.GridPosition.Y].Passable) {
+                    return true;
+                }
+            }
+
+            // If we are moving to the left then also check the node
+            // to the immediate right to ensure it's passable
+            if (node.GridPosition.X < grid.GetLength(0) && node.GridPosition.X < currentGridPos.X) {
+                if (!grid[(int) (node.GridPosition.X + 1), (int) node.GridPosition.Y].Passable) {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
-        private static int getAscentDistance(GridNodeCalc2D node, GridNode2D[,] grid)
+        private static int calculateMovementCost(int movementCost, int diagonalCost, int ascendingCost, int descendingCost, bool isDiagonal, bool isAscending, bool isDescending)
         {
-            int climbAmount = 0;
-            while (node != null) {
-                // If where we have come from is lower than where we started then we are climbing
-                if (node.Parent != null && node.Parent.GridPosition.Y < node.GridPosition.Y) {
-                    // Check that we aren't on the ground
-                    if ((node.GridPosition.Y + 1) < grid.GetLength(1)) {
-                        if (!grid[(int) node.GridPosition.X, (int) (node.GridPosition.Y + 1)].Passable) {
-                            break;
-                        }
-                    }
+            int cost = (isDiagonal ? diagonalCost : movementCost);
 
-                    climbAmount++;
-                }
-
-                node = node.Parent;
+            if (isAscending) {
+                cost += ascendingCost;
+            } else if (isDescending) {
+                cost += descendingCost;
             }
 
-            return climbAmount;
+            return cost;
         }
     }
 }
