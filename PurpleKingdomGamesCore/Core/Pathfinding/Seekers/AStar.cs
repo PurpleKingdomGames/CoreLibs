@@ -93,21 +93,24 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
             while (openNodes.Count > 0) {
                 currentNode = openNodes.Remove();
 
-                // If we have a maximum climb, then make sure that the current node hasn't climbed too high
-                if (maxClimb != 0 && getAscentDistance(currentNode, grid) > maxClimb) {
-                    break;
-                }
-
-                // If we have a maximum climb, then make sure that the current node hasn't fallen too far
-                if (maxDescent != 0 && getDescentDistance(currentNode, grid) > maxDescent) {
-                    break;
-                }
-
-                closedNodes.Add(currentNode.ReferenceNode);
+                // If we have reached the target node then break from the loop
                 if (currentNode.GridPosition == target) {
                     targetNode = currentNode;
                     break;
                 }
+
+                // If we have a maximum climb, then make sure that the current node hasn't climbed too high
+                if (maxClimb != 0 && getAscentDistance(currentNode, grid) > maxClimb) {
+                    continue;
+                }
+
+                // If we have a maximum climb, then make sure that the current node hasn't fallen too far
+                if (maxDescent != 0 && getDescentDistance(currentNode, grid) > maxDescent) {
+                    continue;
+                }
+
+                // Add the current node to the closed list
+                closedNodes.Add(currentNode.ReferenceNode);
 
                 Point2D currentGridPos = currentNode.GridPosition;
 
@@ -137,6 +140,25 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
                             node.GridPosition.X != currentGridPos.X &&
                             node.GridPosition.Y != currentGridPos.Y
                         );
+
+                        // If we're not meant to cut corners, tehn we need to check this now
+                        if (isDiagonal && !cutCorners) {
+                            // If we are further down the grid, then check the square
+                            // above to make sure it's also passable
+                            if (refNode.GridPosition.Y > 0 && refNode.GridPosition.Y > currentGridPos.Y) {
+                                if (!grid[(int) refNode.GridPosition.X, (int) (refNode.GridPosition.Y - 1)].Passable) {
+                                    continue;
+                                }
+                            }
+
+                            // If we are further up the grid, then check the square
+                            // below to make sure it's also passable
+                            if (refNode.GridPosition.Y < maxY && refNode.GridPosition.Y < currentGridPos.Y) {
+                                if (!grid[(int) refNode.GridPosition.X, (int) (refNode.GridPosition.Y + 1)].Passable) {
+                                    continue;
+                                }
+                            }
+                        }
 
                         // Is this node on the open list already?
                         if (refNode == null) {
