@@ -5,14 +5,14 @@ using System.Collections.Generic;
 namespace PurpleKingdomGames.Core.Pathfinding.Seekers
 {
     /// <summary>
-    /// Contains methods for seeking a target within a specified grid using the A* pathfind algorith
+    /// Contains methods for seeking a target within a specified grid using the A* pathfind algorithm
     /// </summary>
     public static class AStar
     {
         public enum LockType
         {
-            Bottom,
-            Top,
+            ClosestBottom,
+            ClosestTop,
             None
         }
 
@@ -38,14 +38,149 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
         /// <param name="start">The start point to seek from</param>
         /// <param name="target">The target to seek to</param>
         /// <param name="lockType">The start point to seek from</param>
+        /// <returns>An array of grid nodes needed to pass through to get to the target</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If the start or target are out of range of the grid
+        /// </exception>
+        public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, LockType lockType)
+        {
+            return Seek(grid, start, target, lockType, 0, 0, true);
+        }
+
+        /// <summary>
+        /// Seek a target in a 2-dimensional grid
+        /// </summary>
+        /// <param name="grid">The grid to search</param>
+        /// <param name="start">The start point to seek from</param>
+        /// <param name="target">The target to seek to</param>
+        /// <param name="cutCorners">Whether or not to cut a corner</param>
+        /// <returns>An array of grid nodes needed to pass through to get to the target</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If the start or target are out of range of the grid
+        /// </exception>
+        public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, bool cutCorners)
+        {
+            return Seek(grid, start, target, LockType.None, 0, 0, cutCorners);
+        }
+
+        /// <summary>
+        /// Seek a target in a 2-dimensional grid
+        /// </summary>
+        /// <param name="grid">The grid to search</param>
+        /// <param name="start">The start point to seek from</param>
+        /// <param name="target">The target to seek to</param>
+        /// <param name="maxClimb">The target to seek to</param>
+        /// <returns>An array of grid nodes needed to pass through to get to the target</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If the start or target are out of range of the grid
+        /// </exception>
+        public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, int maxClimb)
+        {
+            return Seek(grid, start, target, LockType.None, maxClimb, 0, false);
+        }
+
+        /// <summary>
+        /// Seek a target in a 2-dimensional grid
+        /// </summary>
+        /// <param name="grid">The grid to search</param>
+        /// <param name="start">The start point to seek from</param>
+        /// <param name="target">The target to seek to</param>
+        /// <param name="maxClimb">The target to seek to</param>
         /// <param name="maxDescent">The target to seek to</param>
+        /// <returns>An array of grid nodes needed to pass through to get to the target</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If the start or target are out of range of the grid
+        /// </exception>
+        public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, int maxClimb, int maxDescent)
+        {
+            return Seek(grid, start, target, LockType.None, maxClimb, maxDescent, false);
+        }
+
+        /// <summary>
+        /// Seek a target in a 2-dimensional grid
+        /// </summary>
+        /// <param name="grid">The grid to search</param>
+        /// <param name="start">The start point to seek from</param>
+        /// <param name="target">The target to seek to</param>
         /// <param name="maxClimb">The target to seek to</param>
         /// <param name="cutCorners">Whether or not to cut a corner</param>
         /// <returns>An array of grid nodes needed to pass through to get to the target</returns>
         /// <exception cref="ArgumentOutOfRangeException">
         /// If the start or target are out of range of the grid
         /// </exception>
-        public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, LockType lockType, int maxDescent, int maxClimb, bool cutCorners)
+        public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, int maxClimb, bool cutCorners)
+        {
+            return Seek(grid, start, target, LockType.None, maxClimb, 0, cutCorners);
+        }
+
+        /// <summary>
+        /// Seek a target in a 2-dimensional grid
+        /// </summary>
+        /// <param name="grid">The grid to search</param>
+        /// <param name="start">The start point to seek from</param>
+        /// <param name="target">The target to seek to</param>
+        /// <param name="maxClimb">The target to seek to</param>
+        /// <param name="maxDescent">The target to seek to</param>
+        /// <param name="cutCorners">Whether or not to cut a corner</param>
+        /// <returns>An array of grid nodes needed to pass through to get to the target</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If the start or target are out of range of the grid
+        /// </exception>
+        public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, int maxClimb, int maxDescent, bool cutCorners)
+        {
+            return Seek(grid, start, target, LockType.None, maxClimb, maxDescent, cutCorners);
+        }
+
+        /// <summary>
+        /// Seek a target in a 2-dimensional grid
+        /// </summary>
+        /// <param name="grid">The grid to search</param>
+        /// <param name="start">The start point to seek from</param>
+        /// <param name="target">The target to seek to</param>
+        /// <param name="lockType">The start point to seek from</param>
+        /// <param name="maxClimb">The target to seek to</param>
+        /// <returns>An array of grid nodes needed to pass through to get to the target</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If the start or target are out of range of the grid
+        /// </exception>
+        public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, LockType lockType, int maxClimb)
+        {
+            return Seek(grid, start, target, lockType, maxClimb, 0, false);
+        }
+
+        /// <summary>
+        /// Seek a target in a 2-dimensional grid
+        /// </summary>
+        /// <param name="grid">The grid to search</param>
+        /// <param name="start">The start point to seek from</param>
+        /// <param name="target">The target to seek to</param>
+        /// <param name="lockType">The start point to seek from</param>
+        /// <param name="maxClimb">The target to seek to</param>
+        /// <param name="maxDescent">The target to seek to</param>
+        /// <returns>An array of grid nodes needed to pass through to get to the target</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If the start or target are out of range of the grid
+        /// </exception>
+        public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, LockType lockType, int maxClimb, int maxDescent)
+        {
+            return Seek(grid, start, target, lockType, maxClimb, maxDescent, false);
+        }
+
+        /// <summary>
+        /// Seek a target in a 2-dimensional grid
+        /// </summary>
+        /// <param name="grid">The grid to search</param>
+        /// <param name="start">The start point to seek from</param>
+        /// <param name="target">The target to seek to</param>
+        /// <param name="lockType">The start point to seek from</param>
+        /// <param name="maxClimb">The target to seek to</param>
+        /// <param name="maxDescent">The target to seek to</param>
+        /// <param name="cutCorners">Whether or not to cut a corner</param>
+        /// <returns>An array of grid nodes needed to pass through to get to the target</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If the start or target are out of range of the grid
+        /// </exception>
+        public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, LockType lockType, int maxClimb, int maxDescent, bool cutCorners)
         {
             // Check that the starting position is not out of range of the grid
             if (start.X > grid.GetLength(0) || start.X < 0 || start.Y >= grid.GetLength(1) || start.Y < 0) {
@@ -65,8 +200,8 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
 
             // If a lock type is specified then  move the starting position to the top or bottom of the Y axis
             if (lockType != LockType.None) {
-                int step = (lockType == LockType.Bottom ? 1 : -1);
-                int targetI = (lockType == LockType.Bottom ? grid.GetLength(1) : 0);
+                int step = (lockType == LockType.ClosestBottom ? 1 : -1);
+                int targetI = (lockType == LockType.ClosestBottom ? grid.GetLength(1) : 0);
                 for (int i = (int) start.Y; i < targetI; i += step) {
                     if (!grid[(int) start.X, (int) start.Y].Passable) {
                         break;
