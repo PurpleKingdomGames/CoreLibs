@@ -9,9 +9,24 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
     /// </summary>
     public static class AStar
     {
+        /// <summary>
+        /// The default movement cost when not supplied
+        /// </summary>
         public const int DEFAULT_MOVEMENTCOST = 10;
+
+        /// <summary>
+        /// The default diagonal movement cost when not supplied
+        /// </summary>
         public const int DEFAULT_DIAGONALCOST = 14;
+
+        /// <summary>
+        /// The default additional ascent cost, when not supplied
+        /// </summary>
         public const int DEFAULT_ASCENTCOST = 0;
+
+        /// <summary>
+        /// The default additional descent cost, when not supplied
+        /// </summary>
         public const int DEFAULT_DESCENTCOST = 0;
 
         /// <summary>
