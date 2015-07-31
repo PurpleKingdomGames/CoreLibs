@@ -61,7 +61,7 @@ namespace PurpleKingdomGames.Test.Core.Pathfinding.Seekers
         }
 
         /// <summary>
-        /// Test that we can seek in 2D with additional options
+        /// Test that we can seek in 2D without cutting corners and with a high descent cost
         /// </summary>
         [Test]
         public void TestSeekComplicated()
@@ -73,7 +73,7 @@ namespace PurpleKingdomGames.Test.Core.Pathfinding.Seekers
             char[,] charGrid = new char[10, 10] {
                 { 'S', '*', '*', '*', '*', '*', '*', '*', '*', '*' },
                 { 'x', 'x', '*', 'x', 'x', 'x', '*', '*', '*', '*' },
-                { '*', '*', '*', 'x', '*', 'A', '*', '*', '*', '*' },
+                { '*', '*', '*', 'x', 'A', '*', '*', '*', '*', '*' },
                 { '*', '*', '*', '*', '*', 'x', 'x', '*', '*', '*' },
                 { '*', '*', '*', '*', '*', '*', 'x', '*', '*', '*' },
                 { 'x', 'x', 'x', 'x', 'x', 'x', 'x', '*', '*', '*' },
@@ -86,12 +86,12 @@ namespace PurpleKingdomGames.Test.Core.Pathfinding.Seekers
             // Initialise the grid
             GridNode2D[,] grid = buildGridFromChars(charGrid);
             Point2D start = new Point2D(0, 0);
-            Point2D target = new Point2D(5, 2);
+            Point2D target = new Point2D(4, 2);
             Point2D[] expectedPath = new Point2D[] {
                 new Point2D(0, 0), new Point2D(1, 0), new Point2D(2, 0),
                 new Point2D(3, 0), new Point2D(4, 0), new Point2D(5, 0),
                 new Point2D(6, 0), new Point2D(6, 1), new Point2D(6, 2),
-                new Point2D(5, 2)
+                new Point2D(5, 2), new Point2D(4, 2),
             };
             Point2D[] path = AStar.Seek(grid, start, target, false, 0, 1000);
 

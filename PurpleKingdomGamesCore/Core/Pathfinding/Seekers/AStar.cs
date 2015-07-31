@@ -20,7 +20,7 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
         /// <param name="grid">The grid to search</param>
         /// <param name="start">The start point to seek from</param>
         /// <param name="target">The target to seek to</param>
-        /// <returns>An array of grid nodes needed to pass through to get to the target</returns>
+        /// <returns>An array of points needed to pass through to get to the target</returns>
         /// <exception cref="ArgumentOutOfRangeException">
         /// If the start or target are out of range of the grid
         /// </exception>
@@ -39,7 +39,7 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
         /// <param name="start">The start point to seek from</param>
         /// <param name="target">The target to seek to</param>
         /// <param name="cutCorners">Whether or not to cut a corner</param>
-        /// <returns>An array of grid nodes needed to pass through to get to the target</returns>
+        /// <returns>An array of points needed to pass through to get to the target</returns>
         /// <exception cref="ArgumentOutOfRangeException">
         /// If the start or target are out of range of the grid
         /// </exception>
@@ -52,6 +52,17 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
             );
         }
 
+        /// <summary>
+        /// Seek a target in a 2-dimensional grid
+        /// </summary>
+        /// <param name="grid">The grid to search</param>
+        /// <param name="start">The start point to seek from</param>
+        /// <param name="target">The target to seek to</param>
+        /// <param name="ascentCost">The additional cost to apply when ascending</param>
+        /// <returns>An array of points needed to pass through to get to the target</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If the start or target are out of range of the grid
+        /// </exception>
         public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, int ascentCost)
         {
             return Seek(
@@ -61,6 +72,18 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
             );
         }
 
+        /// <summary>
+        /// Seek a target in a 2-dimensional grid
+        /// </summary>
+        /// <param name="grid">The grid to search</param>
+        /// <param name="start">The start point to seek from</param>
+        /// <param name="target">The target to seek to</param>
+        /// <param name="cutCorners">Whether or not to cut a corner</param>
+        /// <param name="ascentCost">The additional cost to apply when ascending</param>
+        /// <returns>An array of points needed to pass through to get to the target</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If the start or target are out of range of the grid
+        /// </exception>
         public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, bool cutCorners, int ascentCost)
         {
             return Seek(
@@ -70,6 +93,18 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
             );
         }
 
+        /// <summary>
+        /// Seek a target in a 2-dimensional grid
+        /// </summary>
+        /// <param name="grid">The grid to search</param>
+        /// <param name="start">The start point to seek from</param>
+        /// <param name="target">The target to seek to</param>
+        /// <param name="ascentCost">The additional cost to apply when ascending</param>
+        /// <param name="descentCost">The additional cost to apply when descending</param>
+        /// <returns>An array of points needed to pass through to get to the target</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If the start or target are out of range of the grid
+        /// </exception>
         public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, int ascentCost, int descentCost)
         {
             return Seek(
@@ -79,6 +114,19 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
             );
         }
 
+        /// <summary>
+        /// Seek a target in a 2-dimensional grid
+        /// </summary>
+        /// <param name="grid">The grid to search</param>
+        /// <param name="start">The start point to seek from</param>
+        /// <param name="target">The target to seek to</param>
+        /// <param name="cutCorners">Whether or not to cut a corner</param>
+        /// <param name="ascentCost">The additional cost to apply when ascending</param>
+        /// <param name="descentCost">The additional cost to apply when descending</param>
+        /// <returns>An array of points needed to pass through to get to the target</returns>
+        /// <exception cref="ArgumentOutOfRangeException">
+        /// If the start or target are out of range of the grid
+        /// </exception>
         public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, bool cutCorners, int ascentCost, int descentCost)
         {
             return Seek(
@@ -94,10 +142,12 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
         /// <param name="grid">The grid to search</param>
         /// <param name="start">The start point to seek from</param>
         /// <param name="target">The target to seek to</param>
-        /// <param name="maxClimb">The target to seek to</param>
-        /// <param name="maxDescent">The target to seek to</param>
         /// <param name="cutCorners">Whether or not to cut a corner</param>
-        /// <returns>An array of grid nodes needed to pass through to get to the target</returns>
+        /// <param name="movementCost">The cost to move left/right/up/down from one node to another</param>
+        /// <param name="diagonalCost">The cost to move in a diagonal from one node to another</param>
+        /// <param name="ascentCost">The additional cost to apply when ascending</param>
+        /// <param name="descentCost">The additional cost to apply when descending</param>
+        /// <returns>An array of points needed to pass through to get to the target</returns>
         /// <exception cref="ArgumentOutOfRangeException">
         /// If the start or target are out of range of the grid
         /// </exception>
@@ -173,6 +223,19 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
             return path.ToArray();
         }
 
+        /// <summary>
+        /// Calculates the next set of nodes to add to the open list and adds them
+        /// </summary>
+        /// <param name="currentNode">The node we're calculating from</param>
+        /// <param name="target">The target node</param>
+        /// <param name="grid">The grid to search</param>
+        /// <param name="openNodes">The open list to add to</param>
+        /// <param name="closedNodes">The closed list to check</param>
+        /// <param name="cutCorners">Whether to cut corners</param>
+        /// <param name="movementCost">The cost of moving up/down/left/right</param>
+        /// <param name="diagonalCost">The cost of moving diagonally</param>
+        /// <param name="ascentCost">The additional cost of ascending</param>
+        /// <param name="descentCost">The additional cost of descending</param>
         private static void calculateOpenList(
             GridNodeCalc2D currentNode, Point2D target, GridNode2D[,] grid,
             GridNodeHeap2D openNodes, List<GridNode2D> closedNodes, bool cutCorners,
@@ -258,6 +321,13 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
             }
         }
 
+        /// <summary>
+        /// Checks to see whether passing to this node would cut a corner
+        /// </summary>
+        /// <param name="node">The node to check</param>
+        /// <param name="currentGridPos">The positio0n we're moving from</param>
+        /// <param name="grid">The grid</param>
+        /// <returns></returns>
         private static bool isCuttingCorner(GridNodeCalc2D node, Point2D currentGridPos, GridNode2D[,] grid)
         {
             // If we are further down the grid, then check the node
@@ -295,6 +365,17 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
             return false;
         }
 
+        /// <summary>
+        /// Calculates teh cost of a node based on whether it's a diagonal, descent, or ascent
+        /// </summary>
+        /// <param name="movementCost">The cost to move</param>
+        /// <param name="diagonalCost">The cost to move if this is a diagonal</param>
+        /// <param name="ascendingCost">The additional cost of this is ascending</param>
+        /// <param name="descendingCost">The additional cost if this is descending</param>
+        /// <param name="isDiagonal">Whether we should calculate as a diagonal</param>
+        /// <param name="isAscending">Whether we should calculate as an ascension</param>
+        /// <param name="isDescending">Whether we should calculate as a descent</param>
+        /// <returns></returns>
         private static int calculateMovementCost(int movementCost, int diagonalCost, int ascendingCost, int descendingCost, bool isDiagonal, bool isAscending, bool isDescending)
         {
             int cost = (isDiagonal ? diagonalCost : movementCost);
