@@ -6,7 +6,7 @@ using PurpleKingdomGames.Core.Pathfinding.Seekers;
 namespace PurpleKingdomGames.Test.Core.Pathfinding.Seekers
 {
     [TestFixture]
-    class AStarTest
+    internal class AStarTest
     {
         /// <summary>
         /// Test that we can seek in 2D without additional options

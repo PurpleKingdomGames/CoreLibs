@@ -6,7 +6,7 @@ using PurpleKingdomGames.Core.Collections;
 namespace PurpleKingdomGames.Test.Core.Collections
 {
     [TestFixture]
-    class BinaryHeapTest
+    internal class BinaryHeapTest
     {
         /// <summary>
         /// Test that the 'Add' method works and increments the count
