@@ -25,10 +25,24 @@ namespace PurpleKingdomGames.Core
             set { _y = value;  IntY = (int) value; }
         }
 
+        /// <summary>
+        /// The X position of this point expressed as an int
+        /// </summary>
         public int IntX { get; private set; }
+
+        /// <summary>
+        /// The Y position of this point expressed as an int
+        /// </summary>
         public int IntY { get; private set; }
 
+        /// <summary>
+        /// Stores the x position as a float
+        /// </summary>
         private float _x;
+
+        /// <summary>
+        /// Stores the y position as a float
+        /// </summary>
         private float _y;
 
         /// <summary>
