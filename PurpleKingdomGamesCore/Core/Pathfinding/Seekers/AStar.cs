@@ -188,7 +188,7 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
             }
 
             GridNodeHeap2D openNodes = new GridNodeHeap2D();
-            List<Point2D> closedNodes = new List<Point2D>();
+            bool[,] closedNodes = new bool[grid.GetLength(0), grid.GetLength(1)];
             GridNodeCalc2D currentNode = grid[(int) start.X, (int) start.Y].ToGridNodeCalc2D();
             GridNodeCalc2D targetNode = null;
 
@@ -209,7 +209,7 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
                 }
 
                 // Add the current node to the closed list
-                closedNodes.Add(currentNode.GridPosition);
+                closedNodes[(int) currentNode.GridPosition.X, (int) currentNode.GridPosition.Y] = true;
 
                 // Add additional nodes to the open list, ready to search
                 calculateOpenList(
@@ -253,7 +253,7 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
         /// <param name="descentCost">The additional cost of descending</param>
         private static void calculateOpenList(
             GridNodeCalc2D currentNode, Point2D target, GridNode2D[,] grid,
-            GridNodeHeap2D openNodes, List<Point2D> closedNodes, bool cutCorners,
+            GridNodeHeap2D openNodes, bool[,] closedNodes, bool cutCorners,
             int movementCost, int diagonalCost, int ascentCost, int descentCost
         )
         {
@@ -271,7 +271,9 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
                     node.GridPosition = new Point2D(x, y);
 
                     // Skip over this node if it's the one we're currently looking at, or it's in the closed list
-                    if (node.GridPosition == currentGridPos || closedNodes.Contains(node.GridPosition)) {
+                    if (
+                        node.GridPosition == currentGridPos ||
+                        closedNodes[(int) node.GridPosition.X, (int) node.GridPosition.Y]) {
                         continue;
                     }
 
