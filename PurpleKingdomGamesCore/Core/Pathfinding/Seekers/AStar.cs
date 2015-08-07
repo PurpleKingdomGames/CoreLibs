@@ -302,8 +302,8 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
                         node.MovementCost = currentNode.TotalCost;
                         node.MovementCost += calculateMovementCost(
                             movementCost, diagonalCost, ascentCost, descentCost,
-                            isDiagonal, node.GridPosition.Y < currentGridPos.Y,
-                            node.GridPosition.Y > currentGridPos.Y
+                            isDiagonal, (node.GridPosition.Y < currentGridPos.Y),
+                            (node.GridPosition.Y > currentGridPos.Y)
                         );
 
                         // Calculate the heuristic cost
@@ -328,8 +328,8 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
                         refNode.MovementCost = refNode.Parent.TotalCost;
                         refNode.MovementCost += calculateMovementCost(
                             movementCost, diagonalCost, ascentCost, descentCost,
-                            isDiagonal, refNode.GridPosition.Y < currentGridPos.Y,
-                            refNode.GridPosition.Y > currentGridPos.Y
+                            isDiagonal, (refNode.GridPosition.Y < currentGridPos.Y),
+                            (refNode.GridPosition.Y > currentGridPos.Y)
                         );
 
                         openNodes.Sort(openNodes.IndexOf(refNode));
