@@ -16,11 +16,11 @@ namespace PurpleKingdomGames.Core.Collections
         {
             get
             {
-                return items.Count;
+                return items.Length;
             }
         }
 
-        private List<T> items = new List<T>();
+        private T[] items = new T[0];
 
         /// <summary>
         /// Add a single item to the heap
@@ -28,9 +28,10 @@ namespace PurpleKingdomGames.Core.Collections
         /// <param name="item"></param>
         public void Add(T item)
         {
-            items.Add(item);
+            Array.Resize<T>(ref items, items.Length + 1);
+            items[items.Length - 1] = item;
 
-            Sort(items.Count - 1);
+            Sort(items.Length - 1);
         }
 
         /// <summary>
@@ -40,9 +41,9 @@ namespace PurpleKingdomGames.Core.Collections
         public T Remove()
         {
             T returnItem = items[0];
-            items[0] = items[items.Count - 1];
+            items[0] = items[items.Length - 1];
 
-            items.RemoveAt(items.Count - 1);
+            Array.Resize<T>(ref items, items.Length - 1);
 
             SortAfterRemoval();
 
@@ -56,22 +57,15 @@ namespace PurpleKingdomGames.Core.Collections
         /// <exception cref="ArgumentOutOfRangeException">If the index is out of range</exception>
         public void Sort(int index)
         {
-            if (index >= items.Count) {
-                throw new ArgumentOutOfRangeException("Index must be less than " + items.Count + " (got " + index + ")");
+            if (index >= items.Length) {
+                throw new ArgumentOutOfRangeException("Index must be less than " + items.Length + " (got " + index + ")");
             }
 
             if (index < 0) {
                 throw new ArgumentOutOfRangeException("Index must be greater than zero (got " + index + ")");
             }
 
-            // Move the item to the end of the heap if we're not already
-            if (index < (items.Count - 1)) {
-                T tmp = items[index];
-                items.RemoveAt(index);
-                items.Add(tmp);
-            }
-
-            int m = items.Count;
+            int m = index + 1;
             while (m != 1) {
                 int compM = (int) Math.Floor(m / 2f);
                 if (items[m - 1].CompareTo(items[compM - 1]) <= 0) {
@@ -93,7 +87,13 @@ namespace PurpleKingdomGames.Core.Collections
         /// <returns>Returns zero or more on success. -1 on failure</returns>
         public int IndexOf(T item)
         {
-            return items.IndexOf(item);
+            for (int i = 0; i < items.Length; i++) {
+                if (item.Equals(items[i])) {
+                    return i;
+                }
+            }
+
+            return -1;
         }
 
         /// <summary>
@@ -105,7 +105,7 @@ namespace PurpleKingdomGames.Core.Collections
             while (true) {
                 int u = i;
                 int compU = 2 * u;
-                if (compU < items.Count) {
+                if (compU < items.Length) {
                     if (items[u - 1].CompareTo(items[compU - 1]) >= 0) {
                         i = compU;
                     }
@@ -113,7 +113,7 @@ namespace PurpleKingdomGames.Core.Collections
                     if (items[i - 1].CompareTo(items[compU]) >= 0) {
                         i = compU + 1;
                     }
-                } else if (compU - 1 < items.Count) {
+                } else if (compU - 1 < items.Length) {
                     if (items[u - 1].CompareTo(items[compU - 1]) >= 0) {
                         i = compU;
                     }
