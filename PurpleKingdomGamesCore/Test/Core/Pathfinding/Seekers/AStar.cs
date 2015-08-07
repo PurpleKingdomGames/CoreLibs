@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System.Diagnostics;
+using NUnit.Framework;
 using PurpleKingdomGames.Core;
 using PurpleKingdomGames.Core.Pathfinding;
 using PurpleKingdomGames.Core.Pathfinding.Seekers;
@@ -202,8 +203,15 @@ namespace PurpleKingdomGames.Test.Core.Pathfinding.Seekers
                 new Point2D(52, 37), new Point2D(53, 37), new Point2D(54, 37),
                 new Point2D(55, 37), new Point2D(56, 37),
             };
-            Point2D[] path = AStar.Seek(grid, start, target, false);
 
+            Stopwatch stopWatch = new Stopwatch();
+
+            stopWatch.Start();
+            Point2D[] path = AStar.Seek(grid, start, target, false);
+            stopWatch.Stop();
+
+            Debug.WriteLine("Seek took: " + stopWatch.ElapsedMilliseconds + "ms");
+            
             // Check that the path taken to A avoids the larger drop (due to the large descent cost)
             Assert.AreEqual(expectedPath, path, "Path from S to A did not match");
         }
