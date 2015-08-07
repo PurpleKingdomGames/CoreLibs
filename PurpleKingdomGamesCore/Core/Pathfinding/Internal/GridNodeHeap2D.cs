@@ -10,12 +10,12 @@ namespace PurpleKingdomGames.Core.Pathfinding.Internal
 
         public new void Add(GridNodeCalc2D item)
         {
-            Point2D pos = item.ReferenceNode.Position;
-            if (!graphHeap.ContainsKey((int) pos.X)) {
-                graphHeap.Add((int) pos.X, new Dictionary<int, GridNodeCalc2D>());
+            Point2D pos = item.GridPosition;
+            if (!graphHeap.ContainsKey(pos.IntX)) {
+                graphHeap.Add(pos.IntX, new Dictionary<int, GridNodeCalc2D>());
             }
 
-            graphHeap[(int) pos.X][(int) pos.Y] = item;
+            graphHeap[pos.IntX][pos.IntY] = item;
 
             base.Add(item);
         }
@@ -23,23 +23,23 @@ namespace PurpleKingdomGames.Core.Pathfinding.Internal
         public new GridNodeCalc2D Remove()
         {
             GridNodeCalc2D item = base.Remove();
-            Point2D pos = item.ReferenceNode.Position;
-            graphHeap[(int) pos.X].Remove((int) pos.Y);
+            Point2D pos = item.GridPosition;
+            graphHeap[pos.IntX].Remove(pos.IntY);
 
             return item;
         }
 
         public GridNodeCalc2D GetByPosition(Point2D position)
         {
-            if (position.X < 0 || position.Y < 0) {
+            if (position.IntX < 0 || position.IntY < 0) {
                 throw new Exception("X and Y cannot be less than zero");
             }
 
-            if (!graphHeap.ContainsKey((int) position.X) || !graphHeap[(int) position.X].ContainsKey((int) position.Y)) {
+            if (!graphHeap.ContainsKey(position.IntX) || !graphHeap[position.IntX].ContainsKey(position.IntY)) {
                 return null;
             }
 
-            return graphHeap[(int) position.X][(int) position.Y];
+            return graphHeap[position.IntX][position.IntY];
         }
     }
 }
