@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>PurpleKingdomGames.Core</id>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <authors>hobnob, davesmith00000</authors>
     <owners>PurpleKingdomGames</owners>
     <licenseUrl>https://github.com/PurpleKingdomGames/CoreLibs/blob/master/LICENSE.md</licenseUrl>
