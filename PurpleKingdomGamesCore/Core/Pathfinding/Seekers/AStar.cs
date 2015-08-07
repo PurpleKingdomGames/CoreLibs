@@ -189,7 +189,7 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
 
             GridNodeHeap2D openNodes = new GridNodeHeap2D();
             bool[,] closedNodes = new bool[grid.GetLength(0), grid.GetLength(1)];
-            GridNodeCalc2D currentNode = grid[(int) start.X, (int) start.Y].ToGridNodeCalc2D();
+            GridNodeCalc2D currentNode = grid[start.IntX, start.IntY].ToGridNodeCalc2D();
             GridNodeCalc2D targetNode = null;
 
             // Set the grid position for the first node
@@ -209,7 +209,7 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
                 }
 
                 // Add the current node to the closed list
-                closedNodes[(int) currentNode.GridPosition.X, (int) currentNode.GridPosition.Y] = true;
+                closedNodes[currentNode.GridPosition.IntX, currentNode.GridPosition.IntY] = true;
 
                 // Add additional nodes to the open list, ready to search
                 calculateOpenList(
@@ -260,10 +260,10 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
             Point2D currentGridPos = currentNode.GridPosition;
 
             // Make sure the X and Y coordinates are always within the grid boundaries
-            int minX = (int) Math.Max(currentGridPos.X - 1, 0);
-            int maxX = (int) Math.Min(currentGridPos.X + 1, grid.GetLength(0) - 1);
-            int minY = (int) Math.Max(currentGridPos.Y - 1, 0);
-            int maxY = (int) Math.Min(currentGridPos.Y + 1, grid.GetLength(1) - 1);
+            int minX = Math.Max(currentGridPos.IntX - 1, 0);
+            int maxX = Math.Min(currentGridPos.IntX + 1, grid.GetLength(0) - 1);
+            int minY = Math.Max(currentGridPos.IntY - 1, 0);
+            int maxY = Math.Min(currentGridPos.IntY + 1, grid.GetLength(1) - 1);
 
             for (int x = minX; x <= maxX; x++) {
                 for (int y = minY; y <= maxY; y++) {
@@ -273,7 +273,7 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
                     // Skip over this node if it's the one we're currently looking at, or it's in the closed list
                     if (
                         node.GridPosition == currentGridPos ||
-                        closedNodes[(int) node.GridPosition.X, (int) node.GridPosition.Y]) {
+                        closedNodes[node.GridPosition.IntX, node.GridPosition.IntY]) {
                         continue;
                     }
 
@@ -307,9 +307,9 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
                         );
 
                         // Calculate the heuristic cost
-                        node.HeuristicCost = (int) (
-                            Math.Abs(node.GridPosition.X - target.X) +
-                            Math.Abs(node.GridPosition.Y - target.Y)
+                        node.HeuristicCost = (
+                            Math.Abs(node.GridPosition.IntX - target.IntX) +
+                            Math.Abs(node.GridPosition.IntY - target.IntY)
                         );
 
                         openNodes.Add(node);
@@ -350,7 +350,7 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
             // If we are further down the grid, then check the node
             // above to make sure it's also passable
             if (node.GridPosition.Y > 0 && node.GridPosition.Y > currentGridPos.Y) {
-                if (!grid[(int) node.GridPosition.X, (int) (node.GridPosition.Y - 1)].Passable) {
+                if (!grid[node.GridPosition.IntX, (node.GridPosition.IntY - 1)].Passable) {
                     return true;
                 }
             }
@@ -358,7 +358,7 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
             // If we are further up the grid, then check the square
             // below to make sure it's also passable
             if (node.GridPosition.Y < grid.GetLength(1) && node.GridPosition.Y < currentGridPos.Y) {
-                if (!grid[(int) node.GridPosition.X, (int) (node.GridPosition.Y + 1)].Passable) {
+                if (!grid[node.GridPosition.IntX, (node.GridPosition.IntY + 1)].Passable) {
                     return true;
                 }
             }
@@ -366,7 +366,7 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
             // If we are moving to the right then also check the node
             // to the immediate left to ensure it's passable
             if (node.GridPosition.X > 0 && node.GridPosition.X > currentGridPos.X) {
-                if (!grid[(int) (node.GridPosition.X - 1), (int) node.GridPosition.Y].Passable) {
+                if (!grid[(node.GridPosition.IntX - 1), node.GridPosition.IntY].Passable) {
                     return true;
                 }
             }
@@ -374,7 +374,7 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
             // If we are moving to the left then also check the node
             // to the immediate right to ensure it's passable
             if (node.GridPosition.X < grid.GetLength(0) && node.GridPosition.X < currentGridPos.X) {
-                if (!grid[(int) (node.GridPosition.X + 1), (int) node.GridPosition.Y].Passable) {
+                if (!grid[(node.GridPosition.IntX + 1), node.GridPosition.IntY].Passable) {
                     return true;
                 }
             }

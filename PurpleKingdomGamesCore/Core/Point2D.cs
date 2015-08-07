@@ -1,4 +1,6 @@
-﻿namespace PurpleKingdomGames.Core
+﻿using System.Runtime.CompilerServices;
+
+namespace PurpleKingdomGames.Core
 {
     /// <summary>
     /// A single 2-dimensional point in world space
@@ -8,12 +10,26 @@
         /// <summary>
         /// The X position of this point
         /// </summary>
-        public float X;
+        public float X
+        {
+            get { return _x; }
+            set { _x = value; IntX = (int) value; }
+        }
 
         /// <summary>
         /// The Y position of this point
         /// </summary>
-        public float Y;
+        public float Y
+        {
+            get { return _y; }
+            set { _y = value;  IntY = (int) value; }
+        }
+
+        public int IntX { get; private set; }
+        public int IntY { get; private set; }
+
+        private float _x;
+        private float _y;
 
         /// <summary>
         /// Creates a new point in world space with the co-ordinates supplied
@@ -22,8 +38,11 @@
         /// <param name="y">The y position of this point</param>
         public Point2D(float x, float y)
         {
-            X = x;
-            Y = y;
+            _x = x;
+            _y = y;
+
+            IntX = (int) x;
+            IntY = (int) y;
         }
 
         /// <summary>
@@ -34,7 +53,7 @@
         /// <returns></returns>
         public static Point2D operator +(Point2D point1, Point2D point2)
         {
-            return new Point2D() { X = point1.X + point2.X, Y = point1.Y + point2.Y };
+            return new Point2D(point1.X + point2.X, point1.Y + point2.Y);
         }
 
         /// <summary>
