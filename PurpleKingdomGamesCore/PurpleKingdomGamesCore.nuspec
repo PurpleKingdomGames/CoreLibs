@@ -10,6 +10,7 @@
     <iconUrl>https://avatars3.githubusercontent.com/u/11760093</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Provides a library with common components for game development</description>
+    <releaseNotes>Performance optimisations</releaseNotes>
     <copyright>Copyright 2015</copyright>
     <tags>PurpleKingdomGames BinaryHeap Pathfinding</tags>
     <language>en-gb</language>
