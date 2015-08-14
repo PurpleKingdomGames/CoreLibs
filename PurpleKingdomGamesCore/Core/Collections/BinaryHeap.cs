@@ -85,13 +85,16 @@ namespace PurpleKingdomGames.Core.Collections
             int m = index + 1;
             while (m != 1) {
                 int compM = (int) Math.Floor(m * 0.5);
-                if (items[m - 1].Item1.CompareTo(items[compM - 1].Item1) <= 0) {
-                    Tuple<T, int> temp = items[compM - 1];
-                    items[compM - 1] = items[m - 1];
-                    items[m - 1] = temp;
+                int firstIndex = compM - 1;
+                int secondIndex = m - 1;
 
-                    items[compM - 1].Item2 = compM - 1;
-                    items[m - 1].Item2 = m - 1;
+                if (items[secondIndex].Item1.CompareTo(items[firstIndex].Item1) <= 0) {
+                    Tuple<T, int> temp = items[firstIndex];
+                    items[firstIndex] = items[secondIndex];
+                    items[secondIndex] = temp;
+
+                    items[firstIndex].Item2 = firstIndex;
+                    items[secondIndex].Item2 = secondIndex;
 
                     m = compM;
                 } else {
@@ -143,8 +146,10 @@ namespace PurpleKingdomGames.Core.Collections
             while (true) {
                 int u = i;
                 int compU = 2 * u;
+                int firstIndex = u - 1;
+
                 if (compU < items.Length) {
-                    if (items[u - 1].Item1.CompareTo(items[compU - 1].Item1) >= 0) {
+                    if (items[firstIndex].Item1.CompareTo(items[compU - 1].Item1) >= 0) {
                         i = compU;
                     }
 
@@ -152,7 +157,7 @@ namespace PurpleKingdomGames.Core.Collections
                         i = compU + 1;
                     }
                 } else if (compU - 1 < items.Length) {
-                    if (items[u - 1].Item1.CompareTo(items[compU - 1].Item1) >= 0) {
+                    if (items[firstIndex].Item1.CompareTo(items[compU - 1].Item1) >= 0) {
                         i = compU;
                     }
                 }
@@ -161,12 +166,13 @@ namespace PurpleKingdomGames.Core.Collections
                     break;
                 }
 
-                Tuple<T, int> temp = items[u - 1];
-                items[u - 1] = items[i - 1];
-                items[i - 1] = temp;
+                int secondIndex = i - 1;
+                Tuple<T, int> temp = items[firstIndex];
 
-                items[u - 1].Item2 = u - 1;
-                items[i - 1].Item2 = i - 1;
+                items[firstIndex] = items[secondIndex];
+                items[secondIndex] = temp;
+                items[firstIndex].Item2 = firstIndex;
+                items[secondIndex].Item2 = secondIndex;
             }
         }
     }
