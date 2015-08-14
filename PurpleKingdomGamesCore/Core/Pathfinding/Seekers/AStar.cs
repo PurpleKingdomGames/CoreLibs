@@ -245,7 +245,7 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
         /// Calculates the next set of nodes to add to the open list and adds them
         /// </summary>
         /// <param name="currentNode">The node we're calculating from</param>
-        /// <param name="targetPoint">The target node</param>
+        /// <param name="target">The target node</param>
         /// <param name="grid">The grid to search</param>
         /// <param name="openNodes">The open list to add to</param>
         /// <param name="closedNodes">The closed list to check</param>
@@ -296,8 +296,8 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
                     }
 
                     // Is this node on the open list already?
-                    GridNodeCalc2D refNode = openNodes.GetByPosition(node.GridPosition);
-                    if (refNode == null) {
+                    int refIndex = openNodes.IndexOf(node);
+                    if (refIndex == -1) {
                         // If not then set the parent to the current node and calculate the cost
                         node.Parent = currentNode;
 
@@ -319,6 +319,7 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
                         continue;
                     }
 
+                    GridNodeCalc2D refNode = openNodes[refIndex];
                     int currentNodeCost = currentNode.MovementCost + currentNode.ReferenceNode.Penalty;
                     int refNodeCost = refNode.MovementCost + refNode.ReferenceNode.Penalty;
 
@@ -335,7 +336,7 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
                             (refNode.GridPosition.Y > currentGridPos.Y)
                         );
 
-                        openNodes.Sort(openNodes.IndexOf(refNode));
+                        openNodes.Sort(refIndex);
                     }
                 }
             }

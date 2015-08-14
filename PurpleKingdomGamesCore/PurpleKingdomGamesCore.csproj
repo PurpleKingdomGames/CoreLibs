@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Collections\BinaryHeap.cs" />
+    <Compile Include="Core\Collections\Internal\Tuple.cs" />
     <Compile Include="Core\Pathfinding\GridNode2D.cs" />
     <Compile Include="Core\Pathfinding\Internal\GridCoord2D.cs" />
     <Compile Include="Core\Pathfinding\Internal\GridNodeCalc2D.cs" />

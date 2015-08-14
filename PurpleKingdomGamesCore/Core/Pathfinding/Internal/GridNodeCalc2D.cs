@@ -83,5 +83,18 @@ namespace PurpleKingdomGames.Core.Pathfinding.Internal
         {
             return ReferenceNode.Equals(comp.ReferenceNode);
         }
+
+        /// <summary>
+        /// Identify an object in a hash-based collection
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            int hash = 17;
+            hash = hash * 23 * GridPosition.X;
+            hash = hash * 23 * GridPosition.Y;
+
+            return hash;
+        }
     }
 }
