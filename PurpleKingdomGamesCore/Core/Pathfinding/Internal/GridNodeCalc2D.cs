@@ -69,5 +69,19 @@ namespace PurpleKingdomGames.Core.Pathfinding.Internal
 
             return 0;
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is GridNodeCalc2D) {
+                return Equals((GridNodeCalc2D) obj);
+            } else {
+                return base.Equals(obj);
+            }
+        }
+
+        public bool Equals(GridNodeCalc2D comp)
+        {
+            return ReferenceNode.Equals(comp.ReferenceNode);
+        }
     }
 }

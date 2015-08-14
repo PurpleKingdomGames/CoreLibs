@@ -9,6 +9,19 @@ namespace PurpleKingdomGames.Core.Collections
     /// <typeparam name="T">Any type that extends IComparable</typeparam>
     public class BinaryHeap<T> where T : IComparable
     {
+
+        public T this[int index]
+        {
+            get
+            {
+                if (index < 0 || index >= items.Length) {
+                    throw new IndexOutOfRangeException();
+                }
+
+                return items[index];
+            }
+        }
+
         /// <summary>
         /// The number of items on the heap
         /// </summary>
@@ -20,7 +33,7 @@ namespace PurpleKingdomGames.Core.Collections
             }
         }
 
-        private T[] items = new T[0];
+        protected T[] items = new T[0];
 
         /// <summary>
         /// Add a single item to the heap
