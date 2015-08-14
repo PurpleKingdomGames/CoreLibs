@@ -1,5 +1,4 @@
-﻿
-namespace PurpleKingdomGames.Core.Collections.Internal
+﻿namespace PurpleKingdomGames.Core.Collections.Internal
 {
     /// <summary>
     /// Provides a Tuple implementaion. This is available in .Net 4.5, but

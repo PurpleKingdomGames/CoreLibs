@@ -1,6 +1,4 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace PurpleKingdomGames.Core
+﻿namespace PurpleKingdomGames.Core
 {
     /// <summary>
     /// A single 2-dimensional point in world space

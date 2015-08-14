@@ -1,11 +1,25 @@
-﻿
-namespace PurpleKingdomGames.Core.Pathfinding.Internal
+﻿namespace PurpleKingdomGames.Core.Pathfinding.Internal
 {
+    /// <summary>
+    /// Stores 2D grid co-ordinates
+    /// </summary>
     internal struct GridCoord2D
     {
+        /// <summary>
+        /// X Co-ordinates
+        /// </summary>
         public int X;
+
+        /// <summary>
+        /// Y Co-ordinates
+        /// </summary>
         public int Y;
 
+        /// <summary>
+        /// Main constructor
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         public GridCoord2D(int x, int y)
         {
             X = x;

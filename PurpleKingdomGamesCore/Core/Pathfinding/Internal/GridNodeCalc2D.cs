@@ -70,6 +70,11 @@ namespace PurpleKingdomGames.Core.Pathfinding.Internal
             return 0;
         }
 
+        /// <summary>
+        /// Checks if 2 Grid nodes are the same
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public override bool Equals(object obj)
         {
             if (obj is GridNodeCalc2D) {
@@ -78,7 +83,11 @@ namespace PurpleKingdomGames.Core.Pathfinding.Internal
                 return base.Equals(obj);
             }
         }
-
+        /// <summary>
+        /// Checks if 2 Grid nodes are the same
+        /// </summary>
+        /// <param name="comp"></param>
+        /// <returns></returns>
         public bool Equals(GridNodeCalc2D comp)
         {
             return ReferenceNode.Equals(comp.ReferenceNode);

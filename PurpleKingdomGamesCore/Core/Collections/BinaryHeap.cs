@@ -1,5 +1,5 @@
-﻿using System;
-using PurpleKingdomGames.Core.Collections.Internal;
+﻿using PurpleKingdomGames.Core.Collections.Internal;
+using System;
 
 namespace PurpleKingdomGames.Core.Collections
 {
@@ -20,7 +20,7 @@ namespace PurpleKingdomGames.Core.Collections
             {
                 if (index < 0 || index >= items.Length) {
                     throw new IndexOutOfRangeException(
-                        "Index cannot be below zero or more than " + items.Length +". Got "+index
+                        "Index cannot be below zero or more than " + items.Length + ". Got " + index
                     );
                 }
 
@@ -57,7 +57,7 @@ namespace PurpleKingdomGames.Core.Collections
         public T Remove()
         {
             int index = items.Length - 1;
-            Tuple <T, int> returnItem = items[0];
+            Tuple<T, int> returnItem = items[0];
             items[0] = items[index];
 
             Array.Resize<Tuple<T, int>>(ref items, index);
@@ -116,13 +116,18 @@ namespace PurpleKingdomGames.Core.Collections
             return -1;
         }
 
+        /// <summary>
+        /// Internal method for adding an item. Only real difference is that it
+        /// returns and exposes the underlying stored object, rather than not returning at all
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
         internal Tuple<T, int> AddInternal(T item)
         {
             int index = items.Length;
             int hash = item.GetHashCode();
             Array.Resize<Tuple<T, int>>(ref items, index + 1);
             Tuple<T, int> returnItem = items[index] = new Tuple<T, int>(item, index);
-
 
             Sort(index);
 
