@@ -33,9 +33,9 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
         /// Seek a target in a 2-dimensional grid
         /// </summary>
         /// <param name="grid">The grid to search</param>
-        /// <param name="start">The start point to seek from</param>
-        /// <param name="target">The target to seek to</param>
-        /// <returns>An array of points needed to pass through to get to the target</returns>
+        /// <param name="startPoint">The start point to seek from</param>
+        /// <param name="targetPoint">The target to seek to</param>
+        /// <returns>An array of points in world space needed to pass through to get to the target</returns>
         /// <exception cref="ArgumentOutOfRangeException">
         /// If the start or target are out of range of the grid
         /// </exception>
@@ -51,10 +51,10 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
         /// Seek a target in a 2-dimensional grid
         /// </summary>
         /// <param name="grid">The grid to search</param>
-        /// <param name="start">The start point to seek from</param>
+        /// <param name="startPoint">The start point to seek from</param>
         /// <param name="targetPoint">The target to seek to</param>
         /// <param name="cutCorners">Whether or not to cut a corner</param>
-        /// <returns>An array of points needed to pass through to get to the target</returns>
+        /// <returns>An array of points in world space needed to pass through to get to the target</returns>
         /// <exception cref="ArgumentOutOfRangeException">
         /// If the start or target are out of range of the grid
         /// </exception>
@@ -71,10 +71,10 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
         /// Seek a target in a 2-dimensional grid
         /// </summary>
         /// <param name="grid">The grid to search</param>
-        /// <param name="start">The start point to seek from</param>
-        /// <param name="target">The target to seek to</param>
+        /// <param name="startPoint">The start point to seek from</param>
+        /// <param name="targetPoint">The target to seek to</param>
         /// <param name="ascentCost">The additional cost to apply when ascending</param>
-        /// <returns>An array of points needed to pass through to get to the target</returns>
+        /// <returns>An array of points in world space needed to pass through to get to the target</returns>
         /// <exception cref="ArgumentOutOfRangeException">
         /// If the start or target are out of range of the grid
         /// </exception>
@@ -91,11 +91,11 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
         /// Seek a target in a 2-dimensional grid
         /// </summary>
         /// <param name="grid">The grid to search</param>
-        /// <param name="start">The start point to seek from</param>
-        /// <param name="target">The target to seek to</param>
+        /// <param name="startPoint">The start point to seek from</param>
+        /// <param name="targetPoint">The target to seek to</param>
         /// <param name="cutCorners">Whether or not to cut a corner</param>
         /// <param name="ascentCost">The additional cost to apply when ascending</param>
-        /// <returns>An array of points needed to pass through to get to the target</returns>
+        /// <returns>An array of points in world space needed to pass through to get to the target</returns>
         /// <exception cref="ArgumentOutOfRangeException">
         /// If the start or target are out of range of the grid
         /// </exception>
@@ -112,11 +112,11 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
         /// Seek a target in a 2-dimensional grid
         /// </summary>
         /// <param name="grid">The grid to search</param>
-        /// <param name="start">The start point to seek from</param>
-        /// <param name="target">The target to seek to</param>
+        /// <param name="startPoint">The start point to seek from</param>
+        /// <param name="targetPoint">The target to seek to</param>
         /// <param name="ascentCost">The additional cost to apply when ascending</param>
         /// <param name="descentCost">The additional cost to apply when descending</param>
-        /// <returns>An array of points needed to pass through to get to the target</returns>
+        /// <returns>An array of points in world space needed to pass through to get to the target</returns>
         /// <exception cref="ArgumentOutOfRangeException">
         /// If the start or target are out of range of the grid
         /// </exception>
@@ -133,12 +133,12 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
         /// Seek a target in a 2-dimensional grid
         /// </summary>
         /// <param name="grid">The grid to search</param>
-        /// <param name="start">The start point to seek from</param>
-        /// <param name="target">The target to seek to</param>
+        /// <param name="startPoint">The start point to seek from</param>
+        /// <param name="targetPoint">The target to seek to</param>
         /// <param name="cutCorners">Whether or not to cut a corner</param>
         /// <param name="ascentCost">The additional cost to apply when ascending</param>
         /// <param name="descentCost">The additional cost to apply when descending</param>
-        /// <returns>An array of points needed to pass through to get to the target</returns>
+        /// <returns>An array of points in world space needed to pass through to get to the target</returns>
         /// <exception cref="ArgumentOutOfRangeException">
         /// If the start or target are out of range of the grid
         /// </exception>
@@ -155,14 +155,14 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
         /// Seek a target in a 2-dimensional grid
         /// </summary>
         /// <param name="grid">The grid to search</param>
-        /// <param name="start">The start point to seek from</param>
-        /// <param name="target">The target to seek to</param>
+        /// <param name="startPoint">The start point to seek from</param>
+        /// <param name="targetPoint">The target to seek to</param>
         /// <param name="cutCorners">Whether or not to cut a corner</param>
         /// <param name="movementCost">The cost to move left/right/up/down from one node to another</param>
         /// <param name="diagonalCost">The cost to move in a diagonal from one node to another</param>
         /// <param name="ascentCost">The additional cost to apply when ascending</param>
         /// <param name="descentCost">The additional cost to apply when descending</param>
-        /// <returns>An array of points needed to pass through to get to the target</returns>
+        /// <returns>An array of points in world space needed to pass through to get to the target</returns>
         /// <exception cref="ArgumentOutOfRangeException">
         /// If the start or target are out of range of the grid
         /// </exception>
@@ -245,7 +245,7 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
         /// Calculates the next set of nodes to add to the open list and adds them
         /// </summary>
         /// <param name="currentNode">The node we're calculating from</param>
-        /// <param name="target">The target node</param>
+        /// <param name="targetPoint">The target node</param>
         /// <param name="grid">The grid to search</param>
         /// <param name="openNodes">The open list to add to</param>
         /// <param name="closedNodes">The closed list to check</param>
