@@ -1,28 +1,12 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace PurpleKingdomGames.Core
+﻿
+namespace PurpleKingdomGames.Core.Pathfinding.Internal
 {
-    /// <summary>
-    /// A single 2-dimensional point in world space
-    /// </summary>
-    public struct Point2D
+    internal struct GridCoord2D
     {
-        /// <summary>
-        /// The X position of this point
-        /// </summary>
-        public float X;
+        public int X;
+        public int Y;
 
-        /// <summary>
-        /// The Y position of this point
-        /// </summary>
-        public float Y;
-
-        /// <summary>
-        /// Creates a new point in world space with the co-ordinates supplied
-        /// </summary>
-        /// <param name="x">The x position of this point</param>
-        /// <param name="y">The y position of this point</param>
-        public Point2D(float x, float y)
+        public GridCoord2D(int x, int y)
         {
             X = x;
             Y = y;
@@ -34,9 +18,9 @@ namespace PurpleKingdomGames.Core
         /// <param name="point1"></param>
         /// <param name="point2"></param>
         /// <returns></returns>
-        public static Point2D operator +(Point2D point1, Point2D point2)
+        public static GridCoord2D operator +(GridCoord2D point1, GridCoord2D point2)
         {
-            return new Point2D(point1.X + point2.X, point1.Y + point2.Y);
+            return new GridCoord2D(point1.X + point2.X, point1.Y + point2.Y);
         }
 
         /// <summary>
@@ -46,8 +30,8 @@ namespace PurpleKingdomGames.Core
         /// <returns></returns>
         public override bool Equals(object obj)
         {
-            if (obj is Point2D) {
-                return Equals((Point2D) obj);
+            if (obj is GridCoord2D) {
+                return Equals((GridCoord2D) obj);
             } else {
                 return base.Equals(obj);
             }
@@ -58,7 +42,7 @@ namespace PurpleKingdomGames.Core
         /// </summary>
         /// <param name="point">The point to compare</param>
         /// <returns></returns>
-        public bool Equals(Point2D point)
+        public bool Equals(GridCoord2D point)
         {
             return this == point;
         }
@@ -69,7 +53,7 @@ namespace PurpleKingdomGames.Core
         /// <param name="point1"></param>
         /// <param name="point2"></param>
         /// <returns></returns>
-        public static bool operator !=(Point2D point1, Point2D point2)
+        public static bool operator !=(GridCoord2D point1, GridCoord2D point2)
         {
             return (point1.X != point2.X || point1.Y != point2.Y);
         }
@@ -80,7 +64,7 @@ namespace PurpleKingdomGames.Core
         /// <param name="point1"></param>
         /// <param name="point2"></param>
         /// <returns></returns>
-        public static bool operator ==(Point2D point1, Point2D point2)
+        public static bool operator ==(GridCoord2D point1, GridCoord2D point2)
         {
             return (point1.X == point2.X && point1.Y == point2.Y);
         }

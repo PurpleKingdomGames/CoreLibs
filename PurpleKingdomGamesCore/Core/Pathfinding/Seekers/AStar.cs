@@ -39,11 +39,11 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
         /// <exception cref="ArgumentOutOfRangeException">
         /// If the start or target are out of range of the grid
         /// </exception>
-        public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target)
+        public static Point2D[] Seek(GridNode2D[,] grid, Point2D startPoint, Point2D targetPoint)
         {
             return Seek(
-                grid, start, target, true, DEFAULT_MOVEMENTCOST, DEFAULT_DIAGONALCOST,
-                DEFAULT_ASCENTCOST, DEFAULT_DESCENTCOST
+                grid, startPoint, targetPoint, true, DEFAULT_MOVEMENTCOST,
+                DEFAULT_DIAGONALCOST, DEFAULT_ASCENTCOST, DEFAULT_DESCENTCOST
             );
         }
 
@@ -52,16 +52,16 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
         /// </summary>
         /// <param name="grid">The grid to search</param>
         /// <param name="start">The start point to seek from</param>
-        /// <param name="target">The target to seek to</param>
+        /// <param name="targetPoint">The target to seek to</param>
         /// <param name="cutCorners">Whether or not to cut a corner</param>
         /// <returns>An array of points needed to pass through to get to the target</returns>
         /// <exception cref="ArgumentOutOfRangeException">
         /// If the start or target are out of range of the grid
         /// </exception>
-        public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, bool cutCorners)
+        public static Point2D[] Seek(GridNode2D[,] grid, Point2D startPoint, Point2D targetPoint, bool cutCorners)
         {
             return Seek(
-                grid, start, target, cutCorners,
+                grid, startPoint, targetPoint, cutCorners,
                 DEFAULT_MOVEMENTCOST, DEFAULT_DIAGONALCOST,
                 DEFAULT_ASCENTCOST, DEFAULT_DESCENTCOST
             );
@@ -78,10 +78,10 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
         /// <exception cref="ArgumentOutOfRangeException">
         /// If the start or target are out of range of the grid
         /// </exception>
-        public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, int ascentCost)
+        public static Point2D[] Seek(GridNode2D[,] grid, Point2D startPoint, Point2D targetPoint, int ascentCost)
         {
             return Seek(
-                grid, start, target, false,
+                grid, startPoint, targetPoint, false,
                 DEFAULT_MOVEMENTCOST, DEFAULT_DIAGONALCOST,
                 ascentCost, DEFAULT_DESCENTCOST
             );
@@ -99,10 +99,10 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
         /// <exception cref="ArgumentOutOfRangeException">
         /// If the start or target are out of range of the grid
         /// </exception>
-        public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, bool cutCorners, int ascentCost)
+        public static Point2D[] Seek(GridNode2D[,] grid, Point2D startPoint, Point2D targetPoint, bool cutCorners, int ascentCost)
         {
             return Seek(
-                grid, start, target, cutCorners,
+                grid, startPoint, targetPoint, cutCorners,
                 DEFAULT_MOVEMENTCOST, DEFAULT_DIAGONALCOST,
                 ascentCost, DEFAULT_DESCENTCOST
             );
@@ -120,10 +120,10 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
         /// <exception cref="ArgumentOutOfRangeException">
         /// If the start or target are out of range of the grid
         /// </exception>
-        public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, int ascentCost, int descentCost)
+        public static Point2D[] Seek(GridNode2D[,] grid, Point2D startPoint, Point2D targetPoint, int ascentCost, int descentCost)
         {
             return Seek(
-                grid, start, target, false,
+                grid, startPoint, targetPoint, false,
                 DEFAULT_MOVEMENTCOST, DEFAULT_DIAGONALCOST,
                 ascentCost, descentCost
             );
@@ -142,10 +142,10 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
         /// <exception cref="ArgumentOutOfRangeException">
         /// If the start or target are out of range of the grid
         /// </exception>
-        public static Point2D[] Seek(GridNode2D[,] grid, Point2D start, Point2D target, bool cutCorners, int ascentCost, int descentCost)
+        public static Point2D[] Seek(GridNode2D[,] grid, Point2D startPoint, Point2D targetPoint, bool cutCorners, int ascentCost, int descentCost)
         {
             return Seek(
-                grid, start, target, cutCorners,
+                grid, startPoint, targetPoint, cutCorners,
                 DEFAULT_MOVEMENTCOST, DEFAULT_DIAGONALCOST,
                 ascentCost, descentCost
             );
@@ -167,10 +167,13 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
         /// If the start or target are out of range of the grid
         /// </exception>
         public static Point2D[] Seek(
-            GridNode2D[,] grid, Point2D start, Point2D target, bool cutCorners,
+            GridNode2D[,] grid, Point2D startPoint, Point2D targetPoint, bool cutCorners,
             int movementCost, int diagonalCost, int ascentCost, int descentCost
         )
         {
+            GridCoord2D start = new GridCoord2D((int) startPoint.X, (int) startPoint.Y);
+            GridCoord2D target = new GridCoord2D((int) targetPoint.X, (int) targetPoint.Y);
+
             // Check that the starting position is not out of range of the grid
             if (start.X > grid.GetLength(0) || start.X < 0 || start.Y >= grid.GetLength(1) || start.Y < 0) {
                 throw new ArgumentOutOfRangeException(
@@ -189,11 +192,11 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
 
             GridNodeHeap2D openNodes = new GridNodeHeap2D();
             bool[,] closedNodes = new bool[grid.GetLength(0), grid.GetLength(1)];
-            GridNodeCalc2D currentNode = grid[start.IntX, start.IntY].ToGridNodeCalc2D();
+            GridNodeCalc2D currentNode = grid[start.X, start.Y].ToGridNodeCalc2D();
             GridNodeCalc2D targetNode = null;
 
             // Set the grid position for the first node
-            currentNode.GridPosition = new Point2D(start.X, start.Y);
+            currentNode.GridPosition = new GridCoord2D(start.X, start.Y);
 
             // Add the starting position to the open list
             openNodes.Add(currentNode);
@@ -209,7 +212,7 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
                 }
 
                 // Add the current node to the closed list
-                closedNodes[currentNode.GridPosition.IntX, currentNode.GridPosition.IntY] = true;
+                closedNodes[currentNode.GridPosition.X, currentNode.GridPosition.Y] = true;
 
                 // Add additional nodes to the open list, ready to search
                 calculateOpenList(
@@ -252,28 +255,28 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
         /// <param name="ascentCost">The additional cost of ascending</param>
         /// <param name="descentCost">The additional cost of descending</param>
         private static void calculateOpenList(
-            GridNodeCalc2D currentNode, Point2D target, GridNode2D[,] grid,
+            GridNodeCalc2D currentNode, GridCoord2D target, GridNode2D[,] grid,
             GridNodeHeap2D openNodes, bool[,] closedNodes, bool cutCorners,
             int movementCost, int diagonalCost, int ascentCost, int descentCost
         )
         {
-            Point2D currentGridPos = currentNode.GridPosition;
+            GridCoord2D currentGridPos = currentNode.GridPosition;
 
             // Make sure the X and Y coordinates are always within the grid boundaries
-            int minX = Math.Max(currentGridPos.IntX - 1, 0);
-            int maxX = Math.Min(currentGridPos.IntX + 1, grid.GetLength(0) - 1);
-            int minY = Math.Max(currentGridPos.IntY - 1, 0);
-            int maxY = Math.Min(currentGridPos.IntY + 1, grid.GetLength(1) - 1);
+            int minX = Math.Max(currentGridPos.X - 1, 0);
+            int maxX = Math.Min(currentGridPos.X + 1, grid.GetLength(0) - 1);
+            int minY = Math.Max(currentGridPos.Y - 1, 0);
+            int maxY = Math.Min(currentGridPos.Y + 1, grid.GetLength(1) - 1);
 
             for (int x = minX; x <= maxX; x++) {
                 for (int y = minY; y <= maxY; y++) {
                     GridNodeCalc2D node = grid[x, y].ToGridNodeCalc2D();
-                    node.GridPosition = new Point2D(x, y);
+                    node.GridPosition = new GridCoord2D(x, y);
 
                     // Skip over this node if it's the one we're currently looking at, or it's in the closed list
                     if (
                         node.GridPosition == currentGridPos ||
-                        closedNodes[node.GridPosition.IntX, node.GridPosition.IntY]) {
+                        closedNodes[node.GridPosition.X, node.GridPosition.Y]) {
                         continue;
                     }
 
@@ -308,8 +311,8 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
 
                         // Calculate the heuristic cost
                         node.HeuristicCost = (
-                            Math.Abs(node.GridPosition.IntX - target.IntX) +
-                            Math.Abs(node.GridPosition.IntY - target.IntY)
+                            Math.Abs(node.GridPosition.X - target.X) +
+                            Math.Abs(node.GridPosition.Y - target.Y)
                         );
 
                         openNodes.Add(node);
@@ -345,12 +348,12 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
         /// <param name="currentGridPos">The positio0n we're moving from</param>
         /// <param name="grid">The grid</param>
         /// <returns></returns>
-        private static bool isCuttingCorner(GridNodeCalc2D node, Point2D currentGridPos, GridNode2D[,] grid)
+        private static bool isCuttingCorner(GridNodeCalc2D node, GridCoord2D currentGridPos, GridNode2D[,] grid)
         {
             // If we are further down the grid, then check the node
             // above to make sure it's also passable
             if (node.GridPosition.Y > 0 && node.GridPosition.Y > currentGridPos.Y) {
-                if (!grid[node.GridPosition.IntX, (node.GridPosition.IntY - 1)].Passable) {
+                if (!grid[node.GridPosition.X, (node.GridPosition.Y - 1)].Passable) {
                     return true;
                 }
             }
@@ -358,7 +361,7 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
             // If we are further up the grid, then check the square
             // below to make sure it's also passable
             if (node.GridPosition.Y < grid.GetLength(1) && node.GridPosition.Y < currentGridPos.Y) {
-                if (!grid[node.GridPosition.IntX, (node.GridPosition.IntY + 1)].Passable) {
+                if (!grid[node.GridPosition.X, (node.GridPosition.Y + 1)].Passable) {
                     return true;
                 }
             }
@@ -366,7 +369,7 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
             // If we are moving to the right then also check the node
             // to the immediate left to ensure it's passable
             if (node.GridPosition.X > 0 && node.GridPosition.X > currentGridPos.X) {
-                if (!grid[(node.GridPosition.IntX - 1), node.GridPosition.IntY].Passable) {
+                if (!grid[(node.GridPosition.X - 1), node.GridPosition.Y].Passable) {
                     return true;
                 }
             }
@@ -374,7 +377,7 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
             // If we are moving to the left then also check the node
             // to the immediate right to ensure it's passable
             if (node.GridPosition.X < grid.GetLength(0) && node.GridPosition.X < currentGridPos.X) {
-                if (!grid[(node.GridPosition.IntX + 1), node.GridPosition.IntY].Passable) {
+                if (!grid[(node.GridPosition.X + 1), node.GridPosition.Y].Passable) {
                     return true;
                 }
             }

@@ -15,22 +15,22 @@ namespace PurpleKingdomGames.Core.Pathfinding.Internal
         /// <summary>
         /// The cost of moving to this node from the parent
         /// </summary>
-        public int MovementCost { get; set; }
+        public int MovementCost;
 
         /// <summary>
         /// The calculated Heuristic cost of moving to this node
         /// </summary>
-        public int HeuristicCost { get; set; }
+        public int HeuristicCost;
 
         /// <summary>
         /// The position of this node on the grid
         /// </summary>
-        public Point2D GridPosition { get; set; }
+        public GridCoord2D GridPosition;
 
         /// <summary>
         /// The parent of this node
         /// </summary>
-        public GridNodeCalc2D Parent { get; set; }
+        public GridNodeCalc2D Parent;
 
         /// <summary>
         /// Calculated total cost
