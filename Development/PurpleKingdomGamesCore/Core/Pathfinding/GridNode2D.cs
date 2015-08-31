@@ -26,10 +26,11 @@ namespace PurpleKingdomGames.Core.Pathfinding
         /// Create a new grid node
         /// </summary>
         /// <param name="position">The position in world space</param>
-        public GridNode2D(Point2D position)
+        /// <param name="passable">Whether you can pass through this node</param>
+        public GridNode2D(Point2D position, bool passable = false)
         {
             Position = position;
-            Passable = false;
+            Passable = passable;
             Penalty = 0;
         }
 
