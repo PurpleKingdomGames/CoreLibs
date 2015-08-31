@@ -10,6 +10,42 @@ namespace PurpleKingdomGames.Test.Core.Pathfinding.Seekers
     internal class AStarTest
     {
         /// <summary>
+        /// Test that a small grid can be navigated multiple times
+        /// </summary>
+        [Test]
+        public void TestSeekBasicRepeat()
+        {
+            // The following are marked for clarity
+            // S = start
+            // A = first target
+            // B = second target
+            char[,] charGrid = new char[,] {
+                { '*', '*', '*', '*', 'S'},
+                { 'A', '*', '*', '*', '*'},
+                { '*', '*', '*', '*', '*'},
+                { '*', '*', '*', '*', '*'},
+            };
+
+            // Initialise the grid
+            GridNode2D[,] grid = buildGridFromChars(charGrid);
+
+            Point2D start = new Point2D(4, 0);
+            Point2D target = new Point2D(0, 1);
+
+            // Repeat 100 times, to catch any oddities on repeated path searches
+            for (int i = 0; i < 100; i++) {
+                Point2D[] expectedPath = new Point2D[] {
+                    new Point2D(4, 0), new Point2D(3, 0), new Point2D(2, 0),
+                    new Point2D(1, 0), new Point2D(0, 1)
+                };
+                Point2D[] path = AStar.Seek(grid, start, target);
+
+                // Check that the path taken was the same as the expected path
+                Assert.AreEqual(expectedPath, path, "Path from S to A did not match");
+            }
+        }
+
+        /// <summary>
         /// Test that we can seek in 2D without additional options
         /// </summary>
         [Test]
