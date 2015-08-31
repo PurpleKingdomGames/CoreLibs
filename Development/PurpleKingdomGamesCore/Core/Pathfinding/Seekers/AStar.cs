@@ -81,7 +81,7 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
         public static Point2D[] Seek(GridNode2D[,] grid, Point2D startPoint, Point2D targetPoint, int ascentCost)
         {
             return Seek(
-                grid, startPoint, targetPoint, false,
+                grid, startPoint, targetPoint, true,
                 DEFAULT_MOVEMENTCOST, DEFAULT_DIAGONALCOST,
                 ascentCost, DEFAULT_DESCENTCOST
             );
@@ -123,7 +123,7 @@ namespace PurpleKingdomGames.Core.Pathfinding.Seekers
         public static Point2D[] Seek(GridNode2D[,] grid, Point2D startPoint, Point2D targetPoint, int ascentCost, int descentCost)
         {
             return Seek(
-                grid, startPoint, targetPoint, false,
+                grid, startPoint, targetPoint, true,
                 DEFAULT_MOVEMENTCOST, DEFAULT_DIAGONALCOST,
                 ascentCost, descentCost
             );
