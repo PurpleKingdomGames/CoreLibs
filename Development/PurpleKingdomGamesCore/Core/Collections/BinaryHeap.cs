@@ -61,6 +61,9 @@ namespace PurpleKingdomGames.Core.Collections
             items[0] = items[index];
 
             Array.Resize<Tuple<T, int>>(ref items, index);
+            for (int i = 0; i < items.Length; i++) {
+                items[i].Item2 = i;
+            }
 
             SortAfterRemoval();
 
