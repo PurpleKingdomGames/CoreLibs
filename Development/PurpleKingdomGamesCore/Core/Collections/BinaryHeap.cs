@@ -20,7 +20,7 @@ namespace PurpleKingdomGames.Core.Collections
             {
                 if (index < 0 || index >= items.Length) {
                     throw new IndexOutOfRangeException(
-                        "Index cannot be below zero or more than " + items.Length + ". Got " + index
+                        "Index cannot be below zero or more than " + (items.Length - 1) + ". Got " + index
                     );
                 }
 
