@@ -3,7 +3,7 @@
   <metadata>
     <id>PurpleKingdomGames.Core</id>
     <title>Purple Kingdom Games Core Libs</title>
-    <version>1.0.4</version>
+    <version>1.0.5</version>
     <authors>hobnob, davesmith00000</authors>
     <owners>PurpleKingdomGames</owners>
     <licenseUrl>https://github.com/PurpleKingdomGames/CoreLibs/blob/master/LICENSE.md</licenseUrl>
@@ -11,7 +11,7 @@
     <iconUrl>https://avatars3.githubusercontent.com/u/11760093</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Provides a library with common components for game development</description>
-    <releaseNotes>Removes dependency on NUnit</releaseNotes>
+    <releaseNotes>Fixes a bug with the binary heap indexing that would sometimes cause pathfinding to fail</releaseNotes>
     <copyright>Copyright 2015</copyright>
     <tags>PurpleKingdomGames BinaryHeap Pathfinding</tags>
     <language>en-gb</language>
